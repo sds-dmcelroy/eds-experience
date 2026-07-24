@@ -350,6 +350,49 @@ function initGsap() {
       }, .8);
   }
 
+  if (location.hash !== "#case-building") {
+    const caseTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#case-building",
+        start: "top 28%",
+        end: "bottom 38%",
+        scrub: 1
+      }
+    });
+    caseTimeline
+      .from("#case-building .case-header", {
+        y: -24,
+        opacity: 0
+      })
+      .from("#case-building .case-evidence", {
+        x: -42,
+        opacity: 0,
+        stagger: .08
+      }, .16)
+      .from("#case-building .case-links path", {
+        strokeDashoffset: 120,
+        opacity: 0,
+        stagger: .06
+      }, .28)
+      .from("#case-building .case-finding", {
+        x: 34,
+        opacity: 0,
+        stagger: .08
+      }, .38)
+      .from("#case-building .case-metrics", {
+        scale: .82,
+        opacity: 0
+      }, .52)
+      .from("#case-building .sequence-line i", {
+        scaleX: 0
+      }, .64)
+      .from("#case-building .case-sequence span", {
+        y: 10,
+        opacity: 0,
+        stagger: .05
+      }, .68);
+  }
+
   gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .08,
     scrollTrigger: { trigger: ".pipeline-grid", start: "top 78%" }
@@ -384,6 +427,19 @@ if (location.hash === "#timeline") {
         smoother.scrollTo("#timeline", false, "top top");
       } else {
         qs("#timeline")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
+}
+
+if (location.hash === "#case-building") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#case-building", false, "top top");
+      } else {
+        qs("#case-building")?.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
   });
