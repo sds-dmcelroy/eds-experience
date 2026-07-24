@@ -54,8 +54,9 @@ Then start the server in VS Code's integrated terminal.
 
 ## Next implementation milestone
 
-1. Replace the flattened River background with independent river, document, particle, dashboard, and landscape layers.
-2. Expand Classification, Entity Extraction, Metadata, and Knowledge Graph into full cinematic scenes.
-3. Build Search, Reporting, and Dynamic Binder as the visual climax.
-4. Add Collaboration and Local / Cloud / Hybrid deployment.
-5. Refine desktop pacing, tablet behavior, mobile simplification, and accessibility.
+1. Develop and approve a new long-term EDS product name and logo identity.
+2. Replace the flattened River background with independent river, document, particle, dashboard, and landscape layers.
+3. Expand Classification, Entity Extraction, Metadata, and Knowledge Graph into full cinematic scenes.
+4. Build Search, Reporting, and Dynamic Binder as the visual climax.
+5. Add Collaboration and Local / Cloud / Hybrid deployment.
+6. Refine desktop pacing, tablet behavior, mobile simplification, and accessibility.

@@ -4,10 +4,26 @@ const qsa = (s, p = document) => [...p.querySelectorAll(s)];
 const progress = qs(".progress span");
 const sceneProgress = qs(".scene-progress");
 const sceneProgressFill = qs(".scene-progress span");
+const sceneTicks = qs(".scene-ticks");
 const sceneNav = qs(".scene-nav");
 const navLinks = qsa(".scene-nav a");
 const scenes = qsa("[data-scene]");
+const sceneTickLabels = ["H", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "J", "13"];
+sceneTicks.innerHTML = scenes.map((scene, index) => `<i><b>${sceneTickLabels[index]}</b></i>`).join("");
+const sceneTickItems = qsa("i", sceneTicks);
 const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+function updateSceneTickPositions() {
+  const pageHeight = document.documentElement.scrollHeight;
+  const maxScroll = Math.max(pageHeight - innerHeight, 1);
+  const estimatedThumbHeight = Math.max(36, innerHeight * (innerHeight / pageHeight));
+  const thumbTravel = Math.max(innerHeight - estimatedThumbHeight, 1);
+
+  scenes.forEach((scene, index) => {
+    const sceneStart = Math.min(scene.offsetTop, maxScroll);
+    sceneTickItems[index].style.top = `${sceneStart / maxScroll * thumbTravel}px`;
+  });
+}
 
 function updateProgress() {
   const max = document.documentElement.scrollHeight - innerHeight;
@@ -21,6 +37,10 @@ function updateProgress() {
   }
 
   const activeIndex = scenes.indexOf(activeScene);
+  sceneTickItems.forEach((tick, index) => {
+    tick.classList.toggle("completed", index < activeIndex);
+    tick.classList.toggle("active", index === activeIndex);
+  });
   const nextScene = scenes[activeIndex + 1];
   const sceneStart = activeScene?.offsetTop || 0;
   const sceneEnd = nextScene?.offsetTop ?? document.documentElement.scrollHeight;
@@ -33,14 +53,100 @@ function updateProgress() {
   sceneProgress.setAttribute("aria-label", `Progress through ${activeScene?.id || "current scene"}`);
 }
 addEventListener("scroll", updateProgress, { passive: true });
-addEventListener("resize", updateProgress);
+addEventListener("resize", () => {
+  updateProgress();
+  updateSceneTickPositions();
+});
+addEventListener("load", updateSceneTickPositions);
 updateProgress();
+updateSceneTickPositions();
 
 qsa(".hero-stations button").forEach((button) => {
   button.addEventListener("click", () => {
     const target = document.getElementById(button.dataset.target);
     target?.scrollIntoView({ behavior: "smooth" });
   });
+});
+
+const requestDialog = qs(".request-dialog");
+const requestForm = qs(".request-form");
+const requestTitle = qs("#request-title");
+const requestIntro = qs(".request-intro");
+const demoFields = qs(".request-demo");
+const evaluationFields = qs(".request-evaluation");
+
+function openRequestDialog(type) {
+  const isDemo = type === "demo";
+  requestForm.reset();
+  requestForm.dataset.requestType = type;
+  requestTitle.textContent = isDemo ? "Schedule a Demo" : "Request an Evaluation";
+  requestIntro.textContent = isDemo
+    ? "Tell us about your organization so we can prepare a useful demonstration."
+    : "Tell us about your goals so we can prepare an appropriate evaluation.";
+  demoFields.hidden = !isDemo;
+  evaluationFields.hidden = isDemo;
+  requestDialog.showModal();
+  requestForm.elements.name.focus();
+}
+
+qsa("[data-request]").forEach((button) => {
+  button.addEventListener("click", () => openRequestDialog(button.dataset.request));
+});
+
+qsa(".dialog-close, .request-cancel").forEach((button) => {
+  button.addEventListener("click", () => requestDialog.close());
+});
+
+requestDialog.addEventListener("click", (event) => {
+  const bounds = requestDialog.getBoundingClientRect();
+  const outside = event.clientX < bounds.left || event.clientX > bounds.right
+    || event.clientY < bounds.top || event.clientY > bounds.bottom;
+  if (outside) requestDialog.close();
+});
+
+function buildRequestMailto(form) {
+  const data = new FormData(form);
+  const isDemo = form.dataset.requestType === "demo";
+  const subject = isDemo ? "Schedule a Demo" : "Request an Evaluation";
+  const lines = [
+    `EDS ${subject}`,
+    "",
+    `Name: ${data.get("name")}`,
+    `Email: ${data.get("email")}`,
+    `Phone: ${data.get("phone") || "Not provided"}`,
+    `Firm / Organization: ${data.get("firm")}`,
+    `Organization Type: ${data.get("firmType")}`,
+    `Estimated Users: ${data.get("users")}`,
+    `Office Footprint: ${data.get("offices")}`,
+    `States / Regions: ${data.get("regions")}`,
+    `Referral Source: ${data.get("referral")}`,
+    ""
+  ];
+
+  if (isDemo) {
+    lines.push(
+      `Demo Interest: ${data.get("demoInterest")}`,
+      `Preferred Timing: ${data.get("demoTiming") || "Not specified"}`,
+      ""
+    );
+  } else {
+    lines.push(
+      `Evaluation Timeframe: ${data.get("evaluationTiming")}`,
+      `Preferred Deployment: ${data.get("deployment")}`,
+      ""
+    );
+  }
+
+  lines.push("Challenge / Goals:", data.get("challenge"));
+  return `mailto:dmcelroy@securediscovery.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+}
+
+requestForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!requestForm.reportValidity()) return;
+  const mailto = buildRequestMailto(requestForm);
+  requestDialog.close();
+  window.location.href = mailto;
 });
 
 const observer = new IntersectionObserver((entries) => {
@@ -220,26 +326,109 @@ function initGsap() {
       yPercent: 10, scale: 1.12, ease: "none",
       scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
     });
-    gsap.to(".document-cloud", {
-      x: 180, y: 90, rotate: 12, ease: "none",
-      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1.2 }
+    const heroDocuments = qsa(".document-cloud .doc");
+    const intakeDocuments = qsa("#capture .intake span");
+    const handoffLayer = document.createElement("div");
+    handoffLayer.className = "document-handoff";
+    document.body.append(handoffLayer);
+    const flyingDocuments = heroDocuments.map((documentIcon) => {
+      const clone = documentIcon.cloneNode(true);
+      handoffLayer.append(clone);
+      gsap.set(clone, { clearProps: "opacity,visibility,transform", opacity: 1 });
+      return clone;
     });
-    gsap.to(".river-hero", {
-      xPercent: 8, scaleY: 1.3, ease: "none",
-      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 }
+    const starts = [];
+    const destinations = [];
+    const measureHandoff = () => {
+      heroDocuments.forEach((documentIcon, index) => {
+        const source = documentIcon.getBoundingClientRect();
+        const destination = intakeDocuments[index].getBoundingClientRect();
+        starts[index] = { x: source.left, y: source.top, width: source.width, height: source.height };
+        destinations[index] = {
+          x: destination.left,
+          y: destination.top + scrollY - qs("#capture").offsetTop,
+          width: destination.width,
+          height: destination.height
+        };
+      });
+    };
+    measureHandoff();
+    let handoffTimeline;
+    handoffTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".hero",
+        start: 1,
+        endTrigger: "#capture",
+        end: "top top",
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onEnter: () => {
+          measureHandoff();
+          handoffTimeline?.invalidate();
+          gsap.set(handoffLayer, { display: "block" });
+          gsap.set(heroDocuments, { autoAlpha: 0 });
+          gsap.set(intakeDocuments, { autoAlpha: 0 });
+          document.documentElement.classList.add("document-handoff-active");
+        },
+        onEnterBack: () => {
+          measureHandoff();
+          handoffTimeline?.invalidate();
+          gsap.set(handoffLayer, { display: "block" });
+          gsap.set(heroDocuments, { autoAlpha: 0 });
+          gsap.set(intakeDocuments, { autoAlpha: 0 });
+          document.documentElement.classList.add("document-handoff-active");
+        },
+        onLeave: () => {
+          gsap.set(handoffLayer, { display: "none" });
+          gsap.set(intakeDocuments, { clearProps: "visibility,opacity" });
+          document.documentElement.classList.remove("document-handoff-active");
+        },
+        onLeaveBack: () => {
+          gsap.set(handoffLayer, { display: "none" });
+          gsap.set(heroDocuments, { clearProps: "visibility,opacity" });
+          gsap.set(intakeDocuments, { clearProps: "visibility,opacity" });
+          document.documentElement.classList.remove("document-handoff-active");
+        },
+        onRefresh: measureHandoff
+      }
     });
+    handoffTimeline.fromTo(flyingDocuments, {
+      left: (index) => starts[index].x,
+      top: (index) => starts[index].y,
+      width: (index) => starts[index].width,
+      height: (index) => starts[index].height,
+      rotate: (index) => index % 2 ? 8 : -8
+    }, {
+      left: (index) => destinations[index].x,
+      top: (index) => destinations[index].y,
+      width: (index) => destinations[index].width,
+      height: (index) => destinations[index].height,
+      rotate: 0,
+      duration: 1,
+      ease: "power1.inOut"
+    });
+    if (scrollY === 0) {
+      gsap.set(intakeDocuments, { clearProps: "visibility,opacity" });
+    }
+    return () => {
+      handoffLayer.remove();
+      gsap.set(heroDocuments, { clearProps: "visibility,opacity" });
+      gsap.set(intakeDocuments, { clearProps: "visibility,opacity" });
+      document.documentElement.classList.remove("document-handoff-active");
+    };
   });
 
-  qsa(".process-scene").forEach((section) => {
+  qsa(".process-scene").forEach((section, index) => {
     const copy = qs(".scene-copy", section);
     const visual = qs(".scene-visual", section);
+    const isAlternating = index % 2 === 1 && innerWidth > 1000;
     if (location.hash === `#${section.id}`) return;
     bindScrollChoreography(gsap.from(copy, {
-      x: -80, opacity: 0, ease: "power3.out",
+      x: isAlternating ? 80 : -80, opacity: 0, ease: "power3.out",
       paused: true
     }), section, { start: "top 92%", end: "top 56%", buildEnd: .88 });
     bindScrollChoreography(gsap.from(visual, {
-      x: 100, opacity: 0, scale: .94, ease: "power3.out",
+      x: isAlternating ? -100 : 100, opacity: 0, scale: .94, ease: "power3.out",
       paused: true
     }), section, { start: "top 88%", end: "top 48%", buildEnd: .9 });
   });
@@ -255,7 +444,7 @@ function initGsap() {
     return () => gsap.set([capturePortal, captureFlow], { clearProps: "y" });
   });
 
-  const intakeOffsets = [[-38, -38], [0, -48], [38, -38], [-32, 28], [32, 28]];
+  const intakeOffsets = [[-48, -44], [0, -54], [48, -44], [-54, 18], [0, 30], [54, 18], [0, 58]];
   gsap.set("#capture .intake", { zIndex: 4 });
   gsap.set("#capture .portal strong", { position: "relative", zIndex: 5 });
 

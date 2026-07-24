@@ -28,10 +28,11 @@
   <div class="scene-progress" role="progressbar" aria-label="Progress through Hero" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <span></span>
   </div>
+  <div class="scene-ticks" aria-hidden="true"></div>
 
   <header class="site-header">
     <a class="brand" href="#hero" aria-label="EDS home">
-      <img src="./assets/logos/LOGO-001-primary-stacked.png" alt="">
+      <img src="./assets/logos/LOGO-002-shield-symbol.png" alt="">
       <span>
         <strong>EDS</strong>
         <small>Electronic Discovery Solution</small>
@@ -62,13 +63,6 @@
       <div class="ambient ambient-a"></div>
       <div class="ambient ambient-b"></div>
 
-      <div class="river river-hero" aria-hidden="true">
-        <i class="strand strand-1"></i>
-        <i class="strand strand-2"></i>
-        <i class="strand strand-3"></i>
-        <i class="strand strand-4"></i>
-      </div>
-
       <div class="document-cloud" aria-hidden="true">
         <span class="doc"><img src="./assets/experience-icons/pdf.png" alt=""></span>
         <span class="doc"><img src="./assets/experience-icons/word.png" alt=""></span>
@@ -76,6 +70,7 @@
         <span class="doc"><img src="./assets/experience-icons/zip.png" alt=""></span>
         <span class="doc"><img src="./assets/experience-icons/image.png" alt=""></span>
         <span class="doc"><img src="./assets/experience-icons/excel.png" alt=""></span>
+        <span class="doc"><img src="./assets/experience-icons/tif.png" alt=""></span>
       </div>
 
       <div class="hero-copy">
@@ -119,8 +114,10 @@
             <span><img src="./assets/experience-icons/pdf.png" alt=""></span>
             <span><img src="./assets/experience-icons/word.png" alt=""></span>
             <span><img src="./assets/experience-icons/email.png" alt=""></span>
-            <span><img src="./assets/experience-icons/image.png" alt=""></span>
             <span><img src="./assets/experience-icons/zip.png" alt=""></span>
+            <span><img src="./assets/experience-icons/image.png" alt=""></span>
+            <span><img src="./assets/experience-icons/excel.png" alt=""></span>
+            <span><img src="./assets/experience-icons/tif.png" alt=""></span>
           </div>
           <div class="portal">
             <i></i><i></i><i></i>
@@ -673,11 +670,11 @@
       <div class="journey-heading">
         <p class="eyebrow green">THE COMPLETE TRANSFORMATION</p>
         <h2>From documents to decisions.</h2>
-        <p>The first milestone establishes the visual system. These scenes are ready for deeper scene-by-scene implementation.</p>
+        <p>Every stage of the River of Information works together to transform disconnected evidence into secure, contextual, and actionable intelligence.</p>
       </div>
 
       <div class="pipeline-grid">
-        <article><span>11</span><b>Deploy</b><p>Local, cloud, or hybrid—without changing the experience.</p></article>
+        <article><span>01–12</span><b>One continuous intelligence workflow</b><p>Capture, analyze, organize, collaborate, and deploy without losing context.</p></article>
       </div>
 
       <div class="security-strip">
@@ -721,8 +718,8 @@
           <p class="final-subheading">From disconnected evidence to actionable intelligence.</p>
           <p class="final-support">EDS helps organizations ingest, organize, analyze, collaborate, and deliver trusted information faster. Built for modern investigations, legal teams, and enterprise knowledge management.</p>
           <div class="final-actions">
-            <button class="primary-action" type="button">Schedule a Demo</button>
-            <button class="secondary-action" type="button">Request an Evaluation</button>
+            <button class="primary-action" type="button" data-request="demo">Schedule a Demo</button>
+            <button class="secondary-action" type="button" data-request="evaluation">Request an Evaluation</button>
           </div>
           <div class="final-indicators">
             <span><i>✓</i>Trusted Intelligence</span>
@@ -735,6 +732,91 @@
       </div>
     </section>
   </main>
+
+  <dialog class="request-dialog" aria-labelledby="request-title">
+    <form class="request-form">
+      <header>
+        <div>
+          <p class="eyebrow blue">CONNECT WITH EDS</p>
+          <h2 id="request-title">Schedule a Demo</h2>
+          <p class="request-intro">Tell us about your organization so we can prepare a useful conversation.</p>
+        </div>
+        <button class="dialog-close" type="button" aria-label="Close request form">×</button>
+      </header>
+
+      <div class="request-grid">
+        <label>Full name <input name="name" autocomplete="name" required></label>
+        <label>Email address <input name="email" type="email" autocomplete="email" required></label>
+        <label>Phone number <input name="phone" type="tel" autocomplete="tel"></label>
+        <label>Firm or organization <input name="firm" autocomplete="organization" required></label>
+        <label>Organization type
+          <select name="firmType" required>
+            <option value="">Select one</option>
+            <option>Law firm</option><option>Corporate legal department</option>
+            <option>Accounting or advisory firm</option><option>Government agency</option>
+            <option>Law enforcement</option><option>Investigation or consulting firm</option>
+            <option>Education</option><option>Other</option>
+          </select>
+        </label>
+        <label>Estimated users
+          <select name="users" required>
+            <option value="">Select one</option>
+            <option>1–5</option><option>6–20</option><option>21–50</option>
+            <option>51–100</option><option>101–250</option><option>251+</option>
+          </select>
+        </label>
+        <label>Office footprint
+          <select name="offices" required>
+            <option value="">Select one</option>
+            <option>One office</option><option>Multiple offices</option>
+            <option>Primarily remote</option><option>Not yet determined</option>
+          </select>
+        </label>
+        <label>States or regions of use <input name="regions" placeholder="Example: Texas, Illinois, nationwide" required></label>
+        <label class="request-wide">How did you hear about us, or who referred you?
+          <input name="referral" required>
+        </label>
+
+        <div class="request-conditional request-demo">
+          <label>What would you most like to see?
+            <select name="demoInterest">
+              <option>Complete product overview</option><option>Document ingestion and OCR</option>
+              <option>AI analysis and entity extraction</option><option>Knowledge graph and timelines</option>
+              <option>Case building and reporting</option><option>Security and deployment</option>
+            </select>
+          </label>
+          <label>Preferred meeting timing <input name="demoTiming" placeholder="Days, times, or general availability"></label>
+        </div>
+
+        <div class="request-conditional request-evaluation" hidden>
+          <label>Evaluation timeframe
+            <select name="evaluationTiming">
+              <option>Immediately</option><option>Within 30 days</option><option>Within 60–90 days</option>
+              <option>Later this year</option><option>Researching options</option>
+            </select>
+          </label>
+          <label>Preferred deployment
+            <select name="deployment">
+              <option>Not yet determined</option><option>On-premises</option>
+              <option>Private cloud</option><option>Public cloud</option><option>Hybrid</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="request-wide">What challenge are you trying to solve?
+          <textarea name="challenge" rows="4" required></textarea>
+        </label>
+      </div>
+
+      <div class="request-footer">
+        <p>This will open your email application with a prepared message. Review it, then choose Send.</p>
+        <div>
+          <button class="request-cancel" type="button">Cancel</button>
+          <button class="request-submit" type="submit">Prepare Email</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
 
   <footer>
     <div class="footer-brand">EDS</div>
