@@ -393,6 +393,48 @@ function initGsap() {
       }, .68);
   }
 
+  if (location.hash !== "#investigation-results") {
+    const resultsTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#investigation-results",
+        start: "top 28%",
+        end: "bottom 38%",
+        scrub: 1
+      }
+    });
+    resultsTimeline
+      .from("#investigation-results .results-header", {
+        y: -24,
+        opacity: 0
+      })
+      .from("#investigation-results .executive-summary", {
+        x: -38,
+        opacity: 0
+      }, .14)
+      .from("#investigation-results .results-findings article", {
+        x: 28,
+        opacity: 0,
+        stagger: .07
+      }, .28)
+      .from("#investigation-results .results-metrics", {
+        scale: .8,
+        opacity: 0
+      }, .42)
+      .from("#investigation-results .action-list article", {
+        y: 18,
+        opacity: 0,
+        stagger: .07
+      }, .56)
+      .from("#investigation-results .completed-seal", {
+        scale: .55,
+        opacity: 0
+      }, .66)
+      .from("#investigation-results .results-complete", {
+        y: 20,
+        opacity: 0
+      }, .74);
+  }
+
   gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .08,
     scrollTrigger: { trigger: ".pipeline-grid", start: "top 78%" }
@@ -440,6 +482,19 @@ if (location.hash === "#case-building") {
         smoother.scrollTo("#case-building", false, "top top");
       } else {
         qs("#case-building")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
+}
+
+if (location.hash === "#investigation-results") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#investigation-results", false, "top top");
+      } else {
+        qs("#investigation-results")?.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
   });
