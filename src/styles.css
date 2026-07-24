@@ -80,6 +80,7 @@ button{font:inherit}
 .ocr .scene-copy h2 em{color:#76c8ff}
 .ai .scene-copy h2 em{color:#ffb45f}
 .classification .scene-copy h2 em{color:#ffd06e}
+.entities .scene-copy h2 em{color:#8bea62}
 .scene-copy p{color:#bdc9e4;font-size:18px;line-height:1.75}
 .scene-copy ul{display:flex;flex-wrap:wrap;gap:10px;padding:0;list-style:none;margin-top:26px}
 .scene-copy li{padding:9px 13px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;font-size:12px}
@@ -143,6 +144,36 @@ linear-gradient(145deg,rgba(18,27,59,.88),rgba(4,16,30,.96))}
 .category-card span{font-size:8px;letter-spacing:.18em;color:#8eea6c}.category-card b{display:block;margin:5px 0 3px;font-size:14px}.category-card small{color:#a8c4ae;font-size:9px}
 .classification-status{position:absolute;z-index:4;left:50%;bottom:5%;transform:translateX(-50%);display:grid;grid-template-columns:auto auto;align-items:center;gap:2px 13px;padding:11px 18px;border:1px solid rgba(108,222,69,.28);border-radius:14px;background:rgba(4,24,24,.82);backdrop-filter:blur(12px)}
 .classification-status span{grid-row:span 2;font-size:8px;letter-spacing:.13em;color:#8eea6c}.classification-status span i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#69df40;box-shadow:0 0 12px #69df40}.classification-status b{font-size:20px}.classification-status small{font-size:7px;letter-spacing:.13em;color:#9db9a7}
+.entities{background:
+radial-gradient(circle at 78% 46%,rgba(67,200,255,.1),transparent 34%),
+linear-gradient(180deg,#07101f,#030a1d)}
+.extraction-visual{display:grid;grid-template-columns:1.08fr .55fr 1fr;align-items:center;gap:4%;padding:6%;background:
+radial-gradient(circle at 51% 50%,rgba(67,200,255,.15),transparent 28%),
+linear-gradient(145deg,rgba(10,29,56,.9),rgba(3,17,29,.97))}
+.extraction-document,.extraction-engine,.extraction-results{position:relative;z-index:2}
+.extraction-document{padding:24px;border:1px solid rgba(255,255,255,.22);border-radius:18px;background:linear-gradient(145deg,#edf4ff,#cbd9eb);color:#17243c;box-shadow:0 24px 50px rgba(0,0,0,.32);overflow:hidden}
+.document-header{display:flex;justify-content:space-between;gap:14px;padding-bottom:15px;border-bottom:1px solid rgba(23,36,60,.18);font-size:8px;font-weight:900;letter-spacing:.12em}
+.document-header small{color:#65728a}.extraction-document p{font-family:Georgia,serif;font-size:clamp(13px,1.15vw,18px);line-height:1.85;margin:26px 0 8px}
+.extraction-document mark{padding:2px 4px;border-radius:4px;color:#102039;background:rgba(101,213,54,.32);box-shadow:0 0 0 1px rgba(60,150,42,.18)}
+.extraction-document .mark-person,.extraction-document .mark-org{background:rgba(139,61,255,.22)}
+.extraction-document .mark-date,.extraction-document .mark-location{background:rgba(67,200,255,.3)}
+.extraction-document .mark-amount{background:rgba(255,198,59,.42)}
+.extract-scan-line{position:absolute;left:0;right:0;height:3px;top:10%;background:#58ddff;box-shadow:0 0 18px #43c8ff;animation:extractScan 3.4s ease-in-out infinite}
+@keyframes extractScan{0%,100%{top:10%;opacity:.5}50%{top:90%;opacity:1}}
+.extraction-engine{display:grid;place-items:center;width:126px;aspect-ratio:1;margin:auto;border-radius:50%;border:2px solid #52d7ff;background:radial-gradient(circle,rgba(67,200,255,.35),rgba(4,19,34,.98) 68%);box-shadow:0 0 48px rgba(67,200,255,.42)}
+.extraction-engine::before{content:"";position:absolute;inset:-15px;border:1px dashed rgba(117,227,255,.5);border-radius:50%;animation:spin 9s linear infinite}
+.extraction-engine i{position:absolute;width:7px;height:7px;border-radius:50%;background:#91e9ff;box-shadow:0 0 13px #43c8ff}
+.extraction-engine i:nth-child(1){left:12%;top:27%}.extraction-engine i:nth-child(2){right:9%;top:42%}.extraction-engine i:nth-child(3){left:38%;bottom:8%}
+.extraction-engine strong{font-size:11px;letter-spacing:.16em}.extraction-engine span{position:absolute;top:63%;font-size:6px;letter-spacing:.13em;color:#91e9ff}
+.extraction-results{display:grid;gap:10px}
+.extracted-entity{padding:12px 14px;border:1px solid rgba(101,213,54,.26);border-radius:13px;background:linear-gradient(90deg,rgba(23,70,59,.74),rgba(6,29,37,.88));box-shadow:0 12px 24px rgba(0,0,0,.2)}
+.extracted-entity span{font-size:7px;letter-spacing:.18em;color:#77e6b5}.extracted-entity b{display:block;margin:4px 0 2px;font-size:12px}.extracted-entity small{font-size:8px;color:#9dbdb3}
+.extracted-entity.person,.extracted-entity.organization{border-color:rgba(159,105,255,.3);background:linear-gradient(90deg,rgba(55,35,91,.78),rgba(14,25,44,.88))}
+.extracted-entity.person span,.extracted-entity.organization span{color:#c6a6ff}
+.extracted-entity.date,.extracted-entity.location{border-color:rgba(67,200,255,.3)}.extracted-entity.date span,.extracted-entity.location span{color:#8ce4ff}
+.extracted-entity.amount{border-color:rgba(255,198,59,.33)}.extracted-entity.amount span{color:#ffda76}
+.extraction-status{position:absolute;z-index:4;left:50%;bottom:4%;transform:translateX(-50%);display:grid;grid-template-columns:auto auto;align-items:center;gap:2px 10px;padding:10px 16px;border:1px solid rgba(101,213,54,.28);border-radius:13px;background:rgba(4,28,28,.86);backdrop-filter:blur(12px);white-space:nowrap}
+.extraction-status i{grid-row:span 2;width:8px;height:8px;border-radius:50%;background:#69df40;box-shadow:0 0 12px #69df40}.extraction-status span{font-size:7px;letter-spacing:.13em;color:#8eea6c}.extraction-status b{font-size:9px;letter-spacing:.08em}
 .journey{padding:140px max(5vw,30px);background:
 radial-gradient(circle at 70% 8%,rgba(81,205,47,.12),transparent 30%),
 linear-gradient(180deg,#030a1d,#071424)}
@@ -181,6 +212,8 @@ footer p{font-size:13px;line-height:1.6;color:#c2cce2}
   .ingest-visual,.ocr-visual{grid-template-columns:1fr;gap:20px}
   .classification-visual{grid-template-columns:1fr 1fr;padding:7%}
   .classification-source{display:none}.classify-core{width:145px}
+  .extraction-visual{grid-template-columns:1fr 1fr;padding:7%}
+  .extraction-document{display:none}.extraction-engine{width:112px}
   .flow-line{height:6px}.portal{width:150px;margin:auto}
   .pipeline-grid{grid-template-columns:1fr}
   .security-strip{display:grid}

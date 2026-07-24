@@ -40,6 +40,7 @@
       <a href="#ocr">OCR</a>
       <a href="#ai">AI</a>
       <a href="#classification">Classify</a>
+      <a href="#entities">Entities</a>
       <a href="#journey">Journey</a>
     </nav>
   </header>
@@ -81,7 +82,7 @@
         <button data-target="ocr"><b>02</b><span>OCR</span></button>
         <button data-target="ai"><b>03</b><span>AI Analysis</span></button>
         <button data-target="classification"><b>04</b><span>Classify</span></button>
-        <button data-target="journey"><b>05</b><span>Connect</span></button>
+        <button data-target="entities"><b>05</b><span>Extract</span></button>
         <button data-target="journey"><b>06</b><span>Deliver</span></button>
       </div>
     </section>
@@ -206,6 +207,49 @@
       </div>
     </section>
 
+    <section class="process-scene scene entities" id="entities" data-scene="entities">
+      <div class="sticky-stage">
+        <div class="scene-number">05</div>
+        <div class="scene-copy">
+          <p class="eyebrow green">ENTITY EXTRACTION</p>
+          <h2>Find the facts <em>inside every document.</em></h2>
+          <p>EDS identifies people, organizations, dates, locations, accounts, and amounts—turning buried details into structured intelligence ready for review.</p>
+          <ul>
+            <li>People &amp; organizations</li>
+            <li>Dates &amp; locations</li>
+            <li>Accounts &amp; amounts</li>
+          </ul>
+        </div>
+
+        <div class="scene-visual extraction-visual" aria-hidden="true">
+          <div class="extraction-document">
+            <div class="document-header">
+              <span>PROJECT APPROVAL · EMAIL</span>
+              <small>DOC 00482</small>
+            </div>
+            <p>On <mark class="mark-date">March 18, 2026</mark>, <mark class="mark-person">Alex Morgan</mark> approved a payment of <mark class="mark-amount">$248,000</mark> to <mark class="mark-org">Northstar Systems</mark> for the <mark class="mark-location">Chicago</mark> deployment.</p>
+            <div class="extract-scan-line"></div>
+          </div>
+
+          <div class="extraction-engine">
+            <i></i><i></i><i></i>
+            <strong>EXTRACT</strong>
+            <span>5 ENTITIES FOUND</span>
+          </div>
+
+          <div class="extraction-results">
+            <article class="extracted-entity person"><span>PERSON</span><b>Alex Morgan</b><small>99% confidence</small></article>
+            <article class="extracted-entity date"><span>DATE</span><b>Mar 18, 2026</b><small>98% confidence</small></article>
+            <article class="extracted-entity amount"><span>AMOUNT</span><b>$248,000</b><small>99% confidence</small></article>
+            <article class="extracted-entity organization"><span>ORGANIZATION</span><b>Northstar Systems</b><small>97% confidence</small></article>
+            <article class="extracted-entity location"><span>LOCATION</span><b>Chicago</b><small>98% confidence</small></article>
+          </div>
+
+          <div class="extraction-status"><i></i><span>STRUCTURED INTELLIGENCE</span><b>READY FOR REVIEW</b></div>
+        </div>
+      </div>
+    </section>
+
     <section class="journey scene" id="journey" data-scene="journey">
       <div class="journey-heading">
         <p class="eyebrow green">THE COMPLETE TRANSFORMATION</p>
@@ -214,7 +258,6 @@
       </div>
 
       <div class="pipeline-grid">
-        <article><span>05</span><b>Entity Extraction</b><p>Find people, dates, accounts, locations, and amounts.</p></article>
         <article><span>06</span><b>Metadata</b><p>Enrich information with structure and context.</p></article>
         <article><span>07</span><b>Knowledge Graph</b><p>Reveal relationships among people, events, and documents.</p></article>
         <article><span>08</span><b>Search</b><p>Surface the right information instantly.</p></article>
