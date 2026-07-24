@@ -663,6 +663,69 @@ function initGsap() {
     });
   }
 
+  if (location.hash !== "#final-experience") {
+    const finalTimeline = gsap.timeline({
+      defaults: { duration: .92, ease: "power3.out" },
+      paused: true
+    });
+    finalTimeline
+      .to("#final-experience .deployment-echo", {
+        scale: .68,
+        opacity: .08
+      })
+      .from("#final-experience .final-horizon", {
+        scaleX: 0,
+        opacity: 0,
+        transformOrigin: "center center"
+      }, .14)
+      .from("#final-experience .final-river path", {
+        strokeDashoffset: 260,
+        opacity: 0,
+        stagger: .08
+      }, .3)
+      .from("#final-experience .final-particles i", {
+        x: (index) => index < 3 ? -150 : 150,
+        opacity: 0,
+        stagger: .08
+      }, .52)
+      .from("#final-experience .final-binder", {
+        y: -48,
+        scale: .8,
+        opacity: 0
+      }, .72)
+      .from("#final-experience .final-content .eyebrow, #final-experience .final-content h2", {
+        y: 28,
+        opacity: 0,
+        stagger: .12
+      }, 1.12)
+      .from("#final-experience .final-subheading, #final-experience .final-support", {
+        y: 18,
+        opacity: 0,
+        stagger: .12
+      }, 1.42)
+      .fromTo("#final-experience .final-actions button", {
+        y: 18,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        stagger: .12
+      }, 1.72)
+      .fromTo("#final-experience .final-indicators span", {
+        y: 12,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        stagger: .08
+      }, 2.02);
+    bindScrollChoreography(finalTimeline, "#final-experience", {
+      start: "top 76%",
+      end: "bottom bottom",
+      buildEnd: .76
+    });
+  }
+
   bindScrollChoreography(gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .12, ease: "power3.out",
     paused: true
@@ -749,6 +812,19 @@ if (location.hash === "#deployment") {
         smoother.scrollTo("#deployment", false, "top top");
       } else {
         qs("#deployment")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
+}
+
+if (location.hash === "#final-experience") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#final-experience", false, "top top");
+      } else {
+        qs("#final-experience")?.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
   });
