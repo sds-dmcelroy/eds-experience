@@ -611,6 +611,58 @@ function initGsap() {
     });
   }
 
+  if (location.hash !== "#deployment") {
+    const deploymentTimeline = gsap.timeline({
+      defaults: { duration: .92, ease: "power3.out" },
+      paused: true
+    });
+    deploymentTimeline
+      .from("#deployment .deployment-core", {
+        scale: 1.65,
+        opacity: 0,
+        filter: "brightness(1.25)"
+      })
+      .from("#deployment .deployment-boundary", {
+        scale: .8,
+        opacity: 0
+      }, .3)
+      .from("#deployment .deployment-destination", {
+        x: (index) => index === 0 ? 65 : -65,
+        y: (index) => index === 0 ? 18 : index === 1 ? 48 : -48,
+        scale: .88,
+        opacity: 0,
+        stagger: .16
+      }, .62)
+      .from("#deployment .infra-racks i, #deployment .infra-private i, #deployment .infra-cloud i", {
+        scaleY: 0,
+        transformOrigin: "center bottom",
+        opacity: 0,
+        stagger: .06
+      }, .96)
+      .from("#deployment .deployment-paths path", {
+        strokeDashoffset: 165,
+        opacity: 0,
+        stagger: .13
+      }, 1.18)
+      .fromTo("#deployment .deployment-badges span", {
+        y: 13,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        stagger: .08
+      }, 1.62)
+      .from("#deployment .deployment-status", {
+        y: 16,
+        opacity: 0
+      }, 2.08);
+    bindScrollChoreography(deploymentTimeline, "#deployment", {
+      start: "top 72%",
+      end: "bottom 28%",
+      buildEnd: .8
+    });
+  }
+
   bindScrollChoreography(gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .12, ease: "power3.out",
     paused: true
@@ -684,6 +736,19 @@ if (location.hash === "#collaboration") {
         smoother.scrollTo("#collaboration", false, "top top");
       } else {
         qs("#collaboration")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
+}
+
+if (location.hash === "#deployment") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#deployment", false, "top top");
+      } else {
+        qs("#deployment")?.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
   });
