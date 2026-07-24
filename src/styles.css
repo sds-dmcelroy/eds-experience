@@ -368,6 +368,125 @@ linear-gradient(180deg,#061827 0%,#03111e 52%,#020a14 100%)}
 .final-content{position:absolute;z-index:7;left:50%;top:51%;width:min(900px,88vw);transform:translateX(-50%)}.final-content .eyebrow{margin:0}.final-content h2{margin:12px 0 12px;font-size:clamp(48px,6.4vw,92px);line-height:.98;letter-spacing:-.045em}.final-subheading{margin:0;color:#e5f4f2;font-size:clamp(18px,2vw,26px);font-weight:700}.final-support{max-width:750px;margin:14px auto 0;color:#aebfd0;font-size:15px;line-height:1.6}
 .final-actions{display:flex;justify-content:center;gap:12px;margin-top:22px}.final-actions button{padding:14px 22px;border-radius:999px;font-weight:800;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}.final-actions button:hover{transform:translateY(-3px)}.primary-action{border:0;background:linear-gradient(90deg,#55c99b,#3c9dcc);color:#03161c;box-shadow:0 14px 35px rgba(54,171,163,.25)}.secondary-action{border:1px solid rgba(128,215,211,.35);background:rgba(7,35,49,.72);color:#e5fffa}.secondary-action:hover{border-color:#7bdec9}
 .final-indicators{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:20px}.final-indicators span{display:flex;align-items:center;gap:5px;padding:6px 9px;border:1px solid rgba(103,205,193,.18);border-radius:999px;background:rgba(9,35,47,.65);color:#b9d9d5;font-size:6px;letter-spacing:.05em}.final-indicators i{display:grid;place-items:center;width:12px;aspect-ratio:1;border-radius:50%;background:rgba(101,213,126,.18);color:#83e497;font-size:7px;font-style:normal}
+
+/* Global visual system polish */
+:root{
+  --surface:rgba(7,22,48,.86);
+  --surface-strong:rgba(5,17,38,.95);
+  --surface-line:rgba(176,204,255,.16);
+  --surface-highlight:rgba(255,255,255,.055);
+  --shadow:0 30px 90px rgba(0,3,18,.48),0 1px 0 rgba(255,255,255,.04) inset;
+}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.site-header{
+  background:linear-gradient(135deg,rgba(7,18,43,.88),rgba(3,12,31,.78));
+  border-color:rgba(177,201,255,.17);
+  box-shadow:0 18px 48px rgba(0,3,18,.34),0 1px 0 rgba(255,255,255,.05) inset;
+}
+.brand img{object-fit:contain;background:rgba(255,255,255,.94);box-shadow:0 6px 18px rgba(0,0,0,.24)}
+.scene-nav a{transition:color .2s ease,background-color .2s ease,box-shadow .2s ease}
+.scene-nav a.active{box-shadow:0 0 0 1px rgba(178,201,255,.08) inset}
+.hero-art{
+  background-image:
+    linear-gradient(90deg,rgba(2,8,23,.96) 0%,rgba(2,8,23,.68) 48%,rgba(2,8,23,.88) 100%),
+    url("../assets/reference/EDS-002-river-of-information.png");
+  filter:saturate(.9) contrast(1.06);
+}
+.hero::after{background:linear-gradient(180deg,rgba(2,8,23,.24),rgba(2,8,23,.12) 50%,#030a1d 100%)}
+.hero-copy{width:min(850px,90vw);text-shadow:0 14px 42px rgba(0,0,0,.68)}
+.hero h1{letter-spacing:-.022em}
+.hero-line{max-width:760px}
+.hero-support{max-width:62ch;color:#dce4f7}
+.scroll-cta{background:rgba(4,12,34,.72);box-shadow:0 12px 35px rgba(0,0,0,.26),0 1px 0 rgba(255,255,255,.05) inset}
+.clarity-panel{background:linear-gradient(145deg,rgba(8,45,39,.82),rgba(4,25,31,.76));border-color:rgba(150,238,190,.24)}
+.doc{box-shadow:0 18px 42px rgba(57,19,143,.46),0 1px 0 rgba(255,255,255,.22) inset}
+.hero-stations button{background:linear-gradient(145deg,rgba(6,17,42,.88),rgba(3,11,28,.78));box-shadow:0 12px 28px rgba(0,0,0,.18),0 1px 0 rgba(255,255,255,.035) inset}
+.sticky-stage{
+  grid-template-columns:minmax(48px,.13fr) minmax(320px,.82fr) minmax(480px,1.08fr);
+  gap:clamp(32px,4vw,72px);
+}
+.sticky-stage::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:0;
+  right:0;
+  top:56%;
+  height:1px;
+  background:linear-gradient(90deg,transparent 3%,rgba(139,61,255,.2) 18%,rgba(22,130,255,.2) 43%,rgba(255,139,31,.16) 68%,rgba(101,213,54,.19) 88%,transparent 97%);
+  box-shadow:0 0 22px rgba(67,139,255,.11);
+  pointer-events:none;
+}
+.scene-number{position:relative;z-index:2;color:#8ea0c7}
+.scene-copy{position:relative}
+.eyebrow{color:#d1daf0;text-shadow:0 2px 16px rgba(0,0,0,.32)}
+.scene-copy h2,.journey h2,.final-cta h2{letter-spacing:-.035em;text-wrap:balance}
+.scene-copy p{max-width:50ch;color:#c8d3e8;line-height:1.68}
+.scene-copy li{
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+  border-color:rgba(193,211,255,.16);
+  color:#d7e0f1;
+  box-shadow:0 1px 0 rgba(255,255,255,.025) inset;
+}
+.scene-visual{
+  border-radius:28px;
+  border-color:var(--surface-line);
+  background:linear-gradient(145deg,rgba(10,29,66,.86),rgba(3,11,30,.96));
+  box-shadow:var(--shadow);
+}
+.scene-visual::after{
+  content:"";
+  position:absolute;
+  z-index:20;
+  inset:0;
+  border-radius:inherit;
+  box-shadow:0 1px 0 var(--surface-highlight) inset,0 -1px 0 rgba(0,0,0,.2) inset;
+  pointer-events:none;
+}
+.entity-card,.category-card,.extracted-entity,.metadata-field,.graph-node,.timeline-card,
+.case-evidence,.case-finding,.results-findings article,.action-list article,.participant,
+.deployment-destination,.pipeline-grid article{
+  box-shadow:0 14px 34px rgba(0,4,20,.24),0 1px 0 rgba(255,255,255,.035) inset;
+}
+.evidence-panel,.findings-panel,.case-metrics,
+.executive-summary,.results-findings,.results-metrics,.recommended-actions,
+.activity-trail{
+  border-color:rgba(177,204,238,.15);
+  background:linear-gradient(145deg,rgba(9,29,52,.9),rgba(5,19,38,.88));
+  box-shadow:0 16px 36px rgba(0,4,20,.2),0 1px 0 rgba(255,255,255,.035) inset;
+}
+.case-header,.results-header{
+  box-shadow:0 12px 28px rgba(0,4,20,.2),0 1px 0 rgba(255,255,255,.05) inset;
+}
+.collab-binder,.final-binder{filter:drop-shadow(0 26px 30px rgba(0,3,18,.48))}
+.binder-page,.final-page{border-color:rgba(177,225,221,.36)}
+.page-front,.final-page-front{box-shadow:0 1px 0 rgba(255,255,255,.65) inset}
+.journey-heading p,.pipeline-grid p,.final-support{color:#b9c7dc}
+.pipeline-grid article{background:linear-gradient(145deg,rgba(14,34,62,.82),rgba(5,17,37,.76))}
+.security-strip{box-shadow:0 20px 48px rgba(0,4,20,.25),0 1px 0 rgba(255,255,255,.04) inset}
+.final-content h2{letter-spacing:-.03em;text-wrap:balance}
+.final-actions button{min-width:180px;box-shadow:0 14px 34px rgba(0,4,20,.24)}
+.final-indicators span{font-size:8px;border-color:rgba(134,216,205,.24);background:rgba(9,35,47,.82)}
+
+@media (min-width:701px){
+  .case-header span,.panel-label span,.case-stat span,.confidence-score span,
+  .results-header span,.results-label span,.result-stat span,.result-confidence span{font-size:7px}
+  .case-header small,.results-header small,.confidence-score small,.result-confidence small{font-size:7px}
+  .case-state b,.panel-label b,.case-evidence b,.case-finding b,
+  .results-label b,.results-findings article b{font-size:8px}
+  .case-evidence small,.case-evidence em,.case-finding small,.case-stat small,
+  .summary-verdict span,.results-findings article small,.result-stat small,
+  .action-list b,.case-sequence span{font-size:6px}
+  .executive-summary p,.findings-panel>p{font-size:8px}
+  .participant b{font-size:9px}.participant span{font-size:7px}.participant small{font-size:6px}
+  .workspace-boundary span,.workspace-boundary b,.annotation,.collaboration-tasks span,
+  .activity-trail header b,.activity-trail li,.collaboration-complete span{font-size:6px}
+  .activity-trail header span,.collaboration-complete b{font-size:7px}
+  .deployment-boundary span,.deployment-boundary b,.deployment-core>small,
+  .deployment-destination header small,.deployment-destination>footer{font-size:6px}
+  .deployment-destination header b,.deployment-badges span,.deployment-status span{font-size:7px}
+  .deployment-destination>strong{font-size:11px}.deployment-destination>p{font-size:7px}.deployment-status b{font-size:8px}
+}
 .hero .strand,
 .process-scene .scene-visual::before,
 .process-scene .portal i,
