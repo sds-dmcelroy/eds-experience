@@ -225,6 +225,49 @@ function initGsap() {
     }
   });
 
+  if (location.hash !== "#metadata") {
+    const metadataTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#metadata",
+        start: "top 28%",
+        end: "bottom 38%",
+        scrub: 1
+      }
+    });
+    metadataTimeline
+      .from("#metadata .metadata-record", {
+        scale: .65,
+        rotateY: -35,
+        opacity: 0
+      })
+      .from("#metadata .metadata-links path", {
+        strokeDashoffset: 120,
+        opacity: 0,
+        stagger: .05
+      }, .2)
+      .from("#metadata .metadata-field", {
+        scale: .78,
+        x: (index) => index % 2 ? -55 : 55,
+        opacity: 0,
+        stagger: .08
+      }, .34)
+      .from("#metadata .metadata-status", {
+        y: 24,
+        opacity: 0
+      }, .78);
+  }
+
+  gsap.to("#metadata .orbit-a", {
+    rotate: 240,
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#metadata",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 1.2
+    }
+  });
+
   gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .08,
     scrollTrigger: { trigger: ".pipeline-grid", start: "top 78%" }
