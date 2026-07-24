@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07132f">
+  <meta name="description" content="EDS transforms unstructured information into trusted intelligence.">
+  <title>EDS Experience — The River of Information</title>
+  <link rel="preload" href="./assets/reference/EDS-002-river-of-information.png" as="image">
+  <link rel="stylesheet" href="./src/styles.css?v=2">
+
+  <!-- GSAP and all animation plugins are loaded exclusively from the local vendor bundle. -->
+  <script src="./vendor/gsap/gsap.min.js"></script>
+  <script src="./vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="./vendor/gsap/ScrollSmoother.min.js"></script>
+  <script src="./vendor/gsap/ScrollToPlugin.min.js"></script>
+  <script src="./vendor/gsap/SplitText.min.js"></script>
+  <script src="./vendor/gsap/MotionPathPlugin.min.js"></script>
+  <script src="./vendor/gsap/Flip.min.js"></script>
+  <script src="./vendor/gsap/MorphSVGPlugin.min.js"></script>
+  <script src="./vendor/gsap/DrawSVGPlugin.min.js"></script>
+  <script src="./vendor/gsap/Observer.min.js"></script>
+</head>
+<body>
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="#hero" aria-label="EDS home">
+      <img src="./assets/logos/LOGO-001-primary-stacked.png" alt="">
+      <span>
+        <strong>EDS</strong>
+        <small>Electronic Discovery Solution</small>
+      </span>
+    </a>
+
+    <nav class="scene-nav" aria-label="Experience sections">
+      <a href="#capture">Capture</a>
+      <a href="#ocr">OCR</a>
+      <a href="#ai">AI</a>
+      <a href="#classification">Classify</a>
+      <a href="#journey">Journey</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero scene" id="hero" data-scene="hero">
+      <div class="hero-art" aria-hidden="true"></div>
+      <div class="ambient ambient-a"></div>
+      <div class="ambient ambient-b"></div>
+
+      <div class="river river-hero" aria-hidden="true">
+        <i class="strand strand-1"></i>
+        <i class="strand strand-2"></i>
+        <i class="strand strand-3"></i>
+        <i class="strand strand-4"></i>
+      </div>
+
+      <div class="document-cloud" aria-hidden="true">
+        <span class="doc">PDF</span><span class="doc">DOC</span><span class="doc">EML</span>
+        <span class="doc">ZIP</span><span class="doc">IMG</span><span class="doc">XLS</span>
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">EDS · ELECTRONIC DISCOVERY SOLUTION</p>
+        <h1>The River of <span>Information</span></h1>
+        <p class="hero-line">Transforming chaos into clarity.<br>Information into intelligence.</p>
+        <p class="hero-support">EDS captures, processes, analyzes, and organizes information so teams can make confident, defensible decisions.</p>
+        <a class="scroll-cta" href="#capture">Enter the river <b>↓</b></a>
+      </div>
+
+      <aside class="clarity-panel" aria-label="Outcome">
+        <small>CLARITY</small>
+        <strong>Trusted Intelligence</strong>
+        <span>Organized. Actionable. Defensible.</span>
+      </aside>
+
+      <div class="hero-stations" aria-label="Processing stages">
+        <button data-target="capture"><b>01</b><span>Ingest</span></button>
+        <button data-target="ocr"><b>02</b><span>OCR</span></button>
+        <button data-target="ai"><b>03</b><span>AI Analysis</span></button>
+        <button data-target="classification"><b>04</b><span>Classify</span></button>
+        <button data-target="journey"><b>05</b><span>Connect</span></button>
+        <button data-target="journey"><b>06</b><span>Deliver</span></button>
+      </div>
+    </section>
+
+    <section class="process-scene scene capture" id="capture" data-scene="capture">
+      <div class="sticky-stage">
+        <div class="scene-number">01</div>
+        <div class="scene-copy">
+          <p class="eyebrow purple">CAPTURE / INGEST</p>
+          <h2>Capture from virtually <em>any source.</em></h2>
+          <p>Documents, email, images, archives, and structured data enter one controlled information flow.</p>
+          <ul>
+            <li>Any source</li><li>Any format</li><li>One secure entry point</li>
+          </ul>
+        </div>
+
+        <div class="scene-visual ingest-visual" aria-hidden="true">
+          <div class="intake">
+            <span>PDF</span><span>DOCX</span><span>EMAIL</span><span>IMAGE</span><span>ZIP</span>
+          </div>
+          <div class="portal">
+            <i></i><i></i><i></i>
+            <strong>INGEST</strong>
+          </div>
+          <div class="flow-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="process-scene scene ocr" id="ocr" data-scene="ocr">
+      <div class="sticky-stage">
+        <div class="scene-number">02</div>
+        <div class="scene-copy">
+          <p class="eyebrow blue">OCR</p>
+          <h2>Turn scanned pages into <em>searchable text.</em></h2>
+          <p>EDS extracts text from scans and images with accuracy and confidence while preserving the source.</p>
+        </div>
+
+        <div class="scene-visual ocr-visual" aria-hidden="true">
+          <div class="scan-page">
+            <div class="scan-beam"></div>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="ocr-output">
+            <code>SEARCHABLE</code>
+            <code>TEXT</code>
+            <code>CONFIDENCE 98.7%</code>
+            <div class="cursor"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="process-scene scene ai" id="ai" data-scene="ai">
+      <div class="sticky-stage">
+        <div class="scene-number">03</div>
+        <div class="scene-copy">
+          <p class="eyebrow orange">AI ANALYSIS</p>
+          <h2>Understand content. Detect patterns. <em>Reveal what matters.</em></h2>
+          <p>AI assists. People decide. EDS highlights concepts, entities, relationships, and anomalies for human review.</p>
+        </div>
+
+        <div class="scene-visual ai-visual" aria-hidden="true">
+          <div class="neural-core"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="entity-card card-a"><small>PERSON</small><b>Alex Morgan</b></div>
+          <div class="entity-card card-b"><small>DATE</small><b>Mar 18, 2026</b></div>
+          <div class="entity-card card-c"><small>AMOUNT</small><b>$248,000</b></div>
+          <svg class="connections" viewBox="0 0 600 440" preserveAspectRatio="none">
+            <path d="M300 220 C220 150 170 115 92 85"/>
+            <path d="M300 220 C395 120 450 105 530 125"/>
+            <path d="M300 220 C420 280 455 335 520 365"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="process-scene scene classification" id="classification" data-scene="classification">
+      <div class="sticky-stage">
+        <div class="scene-number">04</div>
+        <div class="scene-copy">
+          <p class="eyebrow orange">CLASSIFICATION</p>
+          <h2>Turn content into <em>meaningful categories.</em></h2>
+          <p>EDS organizes documents by what they contain, applying consistent categories and review-ready tags while preserving human oversight.</p>
+          <ul>
+            <li>Consistent categories</li>
+            <li>Review-ready tags</li>
+            <li>Confidence with context</li>
+          </ul>
+        </div>
+
+        <div class="scene-visual classification-visual" aria-hidden="true">
+          <div class="classification-flow"></div>
+          <div class="classification-source">
+            <div class="class-document doc-contract"><span>PDF</span><b>Master Services Agreement</b><i>14 pages</i></div>
+            <div class="class-document doc-email"><span>EML</span><b>Project approval thread</b><i>8 messages</i></div>
+            <div class="class-document doc-finance"><span>XLS</span><b>Quarterly transactions</b><i>2,481 rows</i></div>
+            <div class="class-document doc-record"><span>DOC</span><b>Personnel record</b><i>Restricted</i></div>
+          </div>
+
+          <div class="classification-engine">
+            <div class="classify-core">
+              <span>CLASSIFY</span>
+              <strong>CONTENT</strong>
+              <small>AI ASSISTED</small>
+            </div>
+            <div class="confidence-ring"><b>97%</b><small>CONFIDENCE</small></div>
+          </div>
+
+          <div class="category-stack">
+            <article class="category-card legal"><span>LEGAL</span><b>Contracts</b><small>128 documents</small></article>
+            <article class="category-card comms"><span>COMMUNICATIONS</span><b>Email</b><small>342 documents</small></article>
+            <article class="category-card finance"><span>FINANCIAL</span><b>Transactions</b><small>86 documents</small></article>
+            <article class="category-card restricted"><span>RESTRICTED</span><b>Personnel</b><small>41 documents</small></article>
+          </div>
+
+          <div class="classification-status">
+            <span><i></i> CATEGORIZED</span>
+            <b>597</b>
+            <small>DOCUMENTS ORGANIZED</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey scene" id="journey" data-scene="journey">
+      <div class="journey-heading">
+        <p class="eyebrow green">THE COMPLETE TRANSFORMATION</p>
+        <h2>From documents to decisions.</h2>
+        <p>The first milestone establishes the visual system. These scenes are ready for deeper scene-by-scene implementation.</p>
+      </div>
+
+      <div class="pipeline-grid">
+        <article><span>05</span><b>Entity Extraction</b><p>Find people, dates, accounts, locations, and amounts.</p></article>
+        <article><span>06</span><b>Metadata</b><p>Enrich information with structure and context.</p></article>
+        <article><span>07</span><b>Knowledge Graph</b><p>Reveal relationships among people, events, and documents.</p></article>
+        <article><span>08</span><b>Search</b><p>Surface the right information instantly.</p></article>
+        <article><span>09</span><b>Dynamic Binder</b><p>Turn intelligence into professional work product.</p></article>
+        <article><span>10</span><b>Collaborate</b><p>Share, annotate, review, and work securely.</p></article>
+        <article><span>11</span><b>Deploy</b><p>Local, cloud, or hybrid—without changing the experience.</p></article>
+      </div>
+
+      <div class="security-strip">
+        <strong>SECURE. COMPLIANT. DEFENSIBLE.</strong>
+        <span>End-to-End Security</span>
+        <span>Audit Trails</span>
+        <span>Role-Based Access</span>
+        <span>Legal Hold &amp; Retention</span>
+      </div>
+    </section>
+
+    <section class="final-cta scene" id="contact">
+      <img src="./assets/logos/LOGO-001-primary-stacked.png" alt="EDS shield and wordmark">
+      <p class="eyebrow">WHERE INFORMATION BECOMES INTELLIGENCE</p>
+      <h2>See what your information can become.</h2>
+      <button type="button">Schedule a Demo</button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand">EDS</div>
+    <p>Copyright © 2000-2026 Secure Discovery Solutions, LLC &amp; Ofni, LLC. All rights reserved.<br>Made with ❤️ by David.</p>
+  </footer>
+    </div>
+  </div>
+
+  <script type="module" src="./src/app.js?v=2"></script>
+</body>
+</html>
