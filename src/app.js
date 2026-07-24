@@ -69,12 +69,32 @@ function initGsap() {
     });
   }
 
-  const entranceTrigger = (trigger, start) => ({
-    trigger,
-    start,
-    toggleActions: "play none none none",
-    once: true
-  });
+  const bindLifecycle = (animation, trigger, start) => {
+    const resetEntrance = () => {
+      animation.pause(0);
+      if (typeof animation.getChildren === "function") {
+        animation.getChildren(true, true, false).forEach((child) => child.totalProgress(0));
+      }
+      animation.totalProgress(0).pause();
+    };
+
+    resetEntrance();
+    window.ScrollTrigger.create({
+      trigger,
+      start,
+      end: "bottom 18%",
+      onEnter: () => animation.restart(),
+      onLeave: () => animation.progress(1).pause(),
+      onEnterBack: () => animation.progress(1).pause(),
+      onLeaveBack: () => animation.progress(1).pause()
+    });
+    window.ScrollTrigger.create({
+      trigger,
+      start: "top 96%",
+      onLeaveBack: resetEntrance
+    });
+    return animation;
+  };
 
   const load = gsap.timeline({ defaults: { ease: "power3.out" } });
   load.from(".site-header", { y: -40, opacity: 0, duration: .8 })
@@ -102,42 +122,42 @@ function initGsap() {
     const copy = qs(".scene-copy", section);
     const visual = qs(".scene-visual", section);
     if (location.hash === `#${section.id}`) return;
-    gsap.from(copy, {
-      x: -80, opacity: 0, duration: .72, ease: "power3.out",
-      scrollTrigger: entranceTrigger(section, "top 82%")
-    });
-    gsap.from(visual, {
-      x: 100, opacity: 0, scale: .94, duration: .92, ease: "power3.out",
-      scrollTrigger: entranceTrigger(section, "top 78%")
-    });
+    bindLifecycle(gsap.from(copy, {
+      x: -80, opacity: 0, duration: 1.05, ease: "power3.out",
+      paused: true
+    }), section, "top 82%");
+    bindLifecycle(gsap.from(visual, {
+      x: 100, opacity: 0, scale: .94, duration: 1.28, ease: "power3.out",
+      paused: true
+    }), section, "top 78%");
   });
 
-  gsap.to(".intake span", {
-    x: 190, scale: .35, opacity: 0, stagger: .08, duration: .85, ease: "power2.inOut",
-    scrollTrigger: entranceTrigger("#capture", "top 58%")
-  });
-  gsap.to(".portal", {
-    scale: 1.15, filter: "brightness(1.45)", duration: 1.1, ease: "power2.out",
-    scrollTrigger: entranceTrigger("#capture", "top 61%")
-  });
+  bindLifecycle(gsap.from(".intake span", {
+    x: -90, scale: .75, opacity: 0, stagger: .14, duration: 1.12, ease: "power3.out",
+    paused: true
+  }), "#capture", "top 64%");
+  bindLifecycle(gsap.to(".portal", {
+    scale: 1.08, filter: "brightness(1.25)", duration: 1.25, ease: "power2.out",
+    paused: true
+  }), "#capture", "top 61%");
 
-  gsap.from(".ocr-output code", {
-    x: 50, opacity: 0, stagger: .14, duration: .72, ease: "power3.out",
-    scrollTrigger: entranceTrigger("#ocr", "top 64%")
-  });
+  bindLifecycle(gsap.from(".ocr-output code", {
+    x: 50, opacity: 0, stagger: .16, duration: .9, ease: "power3.out",
+    paused: true
+  }), "#ocr", "top 66%");
 
-  gsap.from(".entity-card", {
-    scale: .75, opacity: 0, stagger: .16, duration: .72, ease: "back.out(1.4)",
-    scrollTrigger: entranceTrigger("#ai", "top 64%")
-  });
+  bindLifecycle(gsap.from(".entity-card", {
+    scale: .75, opacity: 0, stagger: .18, duration: .86, ease: "back.out(1.4)",
+    paused: true
+  }), "#ai", "top 66%");
   gsap.to(".neural-core", {
     rotate: 180,
     scrollTrigger: { trigger: "#ai", start: "top 15%", end: "bottom 30%", scrub: 1 }
   });
 
   const classificationTimeline = gsap.timeline({
-    defaults: { duration: .62, ease: "power3.out" },
-    scrollTrigger: entranceTrigger("#classification", "top 68%")
+    defaults: { duration: .88, ease: "power3.out" },
+    paused: true
   });
   classificationTimeline
     .from(".class-document", {
@@ -147,32 +167,25 @@ function initGsap() {
       opacity: 0,
       stagger: .08
     })
-    .to(".class-document", {
-      x: 150,
-      scale: .32,
-      opacity: 0,
-      stagger: .07,
-      duration: .52,
-      ease: "power2.in"
-    }, .32)
     .from(".classify-core", {
       scale: .65,
       rotate: -70,
       filter: "brightness(.7)"
-    }, .25)
+    }, .36)
     .from(".confidence-ring", {
       scale: 0,
       opacity: 0
-    }, .48)
+    }, .62)
     .from(".category-card", {
       x: -85,
       opacity: 0,
       stagger: .1
-    }, .52)
+    }, .7)
     .from(".classification-status", {
       y: 28,
       opacity: 0
-    }, .72);
+    }, 1.02);
+  bindLifecycle(classificationTimeline, "#classification", "top 70%");
 
   gsap.to(".classify-core", {
     rotate: 360,
@@ -187,8 +200,8 @@ function initGsap() {
 
   if (location.hash !== "#entities") {
     const extractionTimeline = gsap.timeline({
-      defaults: { duration: .64, ease: "power3.out" },
-      scrollTrigger: entranceTrigger("#entities", "top 68%")
+      defaults: { duration: .86, ease: "power3.out" },
+      paused: true
     });
     extractionTimeline
       .from("#entities .extraction-document", {
@@ -213,7 +226,8 @@ function initGsap() {
       .from("#entities .extraction-status", {
         y: 24,
         opacity: 0
-      }, .78);
+      }, 1.08);
+    bindLifecycle(extractionTimeline, "#entities", "top 70%");
   }
 
   gsap.to("#entities .extraction-engine", {
@@ -229,8 +243,8 @@ function initGsap() {
 
   if (location.hash !== "#metadata") {
     const metadataTimeline = gsap.timeline({
-      defaults: { duration: .68, ease: "power3.out" },
-      scrollTrigger: entranceTrigger("#metadata", "top 70%")
+      defaults: { duration: .88, ease: "power3.out" },
+      paused: true
     });
     metadataTimeline
       .from("#metadata .metadata-record", {
@@ -252,7 +266,8 @@ function initGsap() {
       .from("#metadata .metadata-status", {
         y: 24,
         opacity: 0
-      }, .78);
+      }, 1.08);
+    bindLifecycle(metadataTimeline, "#metadata", "top 72%");
   }
 
   gsap.to("#metadata .orbit-a", {
@@ -268,8 +283,8 @@ function initGsap() {
 
   if (location.hash !== "#knowledge-graph") {
     const graphTimeline = gsap.timeline({
-      defaults: { duration: .7, ease: "power3.out" },
-      scrollTrigger: entranceTrigger("#knowledge-graph", "top 72%")
+      defaults: { duration: .92, ease: "power3.out" },
+      paused: true
     });
     graphTimeline
       .from("#knowledge-graph .graph-event", {
@@ -294,7 +309,8 @@ function initGsap() {
       .from("#knowledge-graph .graph-status", {
         y: 22,
         opacity: 0
-      }, .8);
+      }, 1.12);
+    bindLifecycle(graphTimeline, "#knowledge-graph", "top 74%");
   }
 
   gsap.to("#knowledge-graph .halo-a", {
@@ -311,8 +327,8 @@ function initGsap() {
   if (location.hash !== "#timeline") {
     const mobileTimeline = matchMedia("(max-width: 700px)").matches;
     const timeline = gsap.timeline({
-      defaults: { duration: .68, ease: "power3.out" },
-      scrollTrigger: entranceTrigger("#timeline", "top 72%")
+      defaults: { duration: .9, ease: "power3.out" },
+      paused: true
     });
     timeline
       .from("#timeline .timeline-line", {
@@ -337,13 +353,14 @@ function initGsap() {
       .from("#timeline .timeline-status", {
         y: 22,
         opacity: 0
-      }, .8);
+      }, 1.14);
+    bindLifecycle(timeline, "#timeline", "top 74%");
   }
 
   if (location.hash !== "#case-building") {
     const caseTimeline = gsap.timeline({
-      defaults: { duration: .7, ease: "power3.out" },
-      scrollTrigger: entranceTrigger("#case-building", "top 74%")
+      defaults: { duration: .92, ease: "power3.out" },
+      paused: true
     });
     caseTimeline
       .from("#case-building .case-header", {
@@ -376,13 +393,14 @@ function initGsap() {
         y: 10,
         opacity: 0,
         stagger: .05
-      }, .68);
+      }, 1.08);
+    bindLifecycle(caseTimeline, "#case-building", "top 76%");
   }
 
   if (location.hash !== "#investigation-results") {
     const resultsTimeline = gsap.timeline({
-      defaults: { duration: .72, ease: "power3.out" },
-      scrollTrigger: entranceTrigger("#investigation-results", "top 76%")
+      defaults: { duration: .94, ease: "power3.out" },
+      paused: true
     });
     resultsTimeline
       .from("#investigation-results .results-header", {
@@ -414,13 +432,14 @@ function initGsap() {
       .from("#investigation-results .results-complete", {
         y: 20,
         opacity: 0
-      }, .74);
+      }, 1.16);
+    bindLifecycle(resultsTimeline, "#investigation-results", "top 78%");
   }
 
-  gsap.from(".pipeline-grid article", {
-    y: 60, opacity: 0, stagger: .08, duration: .72, ease: "power3.out",
-    scrollTrigger: entranceTrigger(".pipeline-grid", "top 82%")
-  });
+  bindLifecycle(gsap.from(".pipeline-grid article", {
+    y: 60, opacity: 0, stagger: .1, duration: .86, ease: "power3.out",
+    paused: true
+  }), ".pipeline-grid", "top 84%");
 }
 
 const gsapReady = Boolean(window.gsap && window.ScrollTrigger);
