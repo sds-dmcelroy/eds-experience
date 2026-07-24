@@ -41,7 +41,7 @@ button{font:inherit}
 .ambient-b{width:34vw;height:34vw;background:var(--green);right:-18vw;top:20vh}
 .hero-copy{position:relative;z-index:5;width:min(780px,88vw);text-align:center;text-shadow:0 10px 35px rgba(0,0,0,.5)}
 .eyebrow{font-size:12px;letter-spacing:.28em;font-weight:800;color:#c4ceea}
-.hero h1{margin:18px 0 14px;font-size:clamp(64px,9.5vw,154px);line-height:.86;letter-spacing:-.065em}
+.hero h1{margin:18px 0 14px;font-size:clamp(64px,9.5vw,154px);line-height:.86;letter-spacing:-.035em}
 .hero h1 span{display:block;background:linear-gradient(90deg,#b18aff,#72b7ff,#ffe297,#a8f28b);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-line{font-size:clamp(21px,2.3vw,36px);line-height:1.25;margin:28px auto 18px;max-width:810px}
 .hero-support{max-width:720px;margin:0 auto;color:#d4dcf3;font-size:17px;line-height:1.7}
