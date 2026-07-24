@@ -540,6 +540,77 @@ function initGsap() {
     });
   }
 
+  if (location.hash !== "#collaboration") {
+    const collaborationTimeline = gsap.timeline({
+      defaults: { duration: .88, ease: "power3.out" },
+      paused: true
+    });
+    collaborationTimeline
+      .from("#collaboration .collab-binder", {
+        y: 48,
+        scale: .72,
+        rotateY: -18,
+        opacity: 0
+      })
+      .from("#collaboration .workspace-boundary", {
+        scale: .94,
+        opacity: 0
+      }, .28)
+      .from("#collaboration .participant", {
+        x: (index) => index === 1 ? 46 : -46,
+        y: (index) => index === 2 ? 24 : 0,
+        opacity: 0,
+        stagger: .13
+      }, .52)
+      .from("#collaboration .collaboration-links path", {
+        strokeDashoffset: 150,
+        opacity: 0,
+        stagger: .1
+      }, .9)
+      .from("#collaboration .annotation", {
+        scale: .65,
+        opacity: 0,
+        stagger: .1,
+        ease: "back.out(1.35)"
+      }, 1.18)
+      .fromTo("#collaboration .collaboration-tasks span", {
+        y: 14,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        stagger: .08
+      }, 1.48)
+      .from("#collaboration .activity-trail", {
+        x: 34,
+        opacity: 0
+      }, 1.68)
+      .from("#collaboration .activity-trail li", {
+        x: 14,
+        opacity: 0,
+        stagger: .09
+      }, 1.82)
+      .from("#collaboration .collaboration-river i", {
+        scaleX: 0,
+        transformOrigin: "left center",
+        stagger: .08
+      }, 2.02)
+      .from("#collaboration .collaboration-river span", {
+        x: -90,
+        opacity: 0,
+        stagger: .1
+      }, 2.08)
+      .from("#collaboration .collaboration-complete", {
+        y: 16,
+        opacity: 0
+      }, 2.34);
+    bindScrollChoreography(collaborationTimeline, "#collaboration", {
+      start: "top 72%",
+      end: "bottom 28%",
+      buildEnd: .82
+    });
+  }
+
   bindScrollChoreography(gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .12, ease: "power3.out",
     paused: true
@@ -600,6 +671,19 @@ if (location.hash === "#investigation-results") {
         smoother.scrollTo("#investigation-results", false, "top top");
       } else {
         qs("#investigation-results")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
+}
+
+if (location.hash === "#collaboration") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#collaboration", false, "top top");
+      } else {
+        qs("#collaboration")?.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
   });
