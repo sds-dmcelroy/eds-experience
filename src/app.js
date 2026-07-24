@@ -179,38 +179,40 @@ function initGsap() {
     }
   });
 
-  const extractionTimeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: "#entities",
-      start: "top 28%",
-      end: "bottom 38%",
-      scrub: 1
-    }
-  });
-  extractionTimeline
-    .from("#entities .extraction-document", {
-      x: -70,
-      rotate: -3,
-      opacity: 0
-    })
-    .from("#entities .extract-scan-line", {
-      scaleX: 0,
-      transformOrigin: "left center"
-    }, .12)
-    .from("#entities .extraction-engine", {
-      scale: .55,
-      rotate: -90,
-      opacity: 0
-    }, .25)
-    .from("#entities .extracted-entity", {
-      x: -75,
-      opacity: 0,
-      stagger: .09
-    }, .42)
-    .from("#entities .extraction-status", {
-      y: 24,
-      opacity: 0
-    }, .78);
+  if (location.hash !== "#entities") {
+    const extractionTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#entities",
+        start: "top 28%",
+        end: "bottom 38%",
+        scrub: 1
+      }
+    });
+    extractionTimeline
+      .from("#entities .extraction-document", {
+        x: -70,
+        rotate: -3,
+        opacity: 0
+      })
+      .from("#entities .extract-scan-line", {
+        scaleX: 0,
+        transformOrigin: "left center"
+      }, .12)
+      .from("#entities .extraction-engine", {
+        scale: .55,
+        rotate: -90,
+        opacity: 0
+      }, .25)
+      .from("#entities .extracted-entity", {
+        x: -75,
+        opacity: 0,
+        stagger: .09
+      }, .42)
+      .from("#entities .extraction-status", {
+        y: 24,
+        opacity: 0
+      }, .78);
+  }
 
   gsap.to("#entities .extraction-engine", {
     rotate: 360,
