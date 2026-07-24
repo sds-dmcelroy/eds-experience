@@ -43,6 +43,7 @@
       <a href="#entities">Entities</a>
       <a href="#metadata">Metadata</a>
       <a href="#knowledge-graph">Graph</a>
+      <a href="#timeline">Timeline</a>
       <a href="#journey">Journey</a>
     </nav>
   </header>
@@ -354,6 +355,59 @@
       </div>
     </section>
 
+    <section class="process-scene scene timeline" id="timeline" data-scene="timeline">
+      <div class="sticky-stage">
+        <div class="scene-number">08</div>
+        <div class="scene-copy">
+          <p class="eyebrow orange">INVESTIGATIVE TIMELINE</p>
+          <h2>Reconstruct events into a <em>chronological story.</em></h2>
+          <p>EDS assembles extracted entities, metadata, and relationships into an investigative sequence—making timing, causality, and supporting evidence clear.</p>
+          <ul>
+            <li>Chronological sequence</li>
+            <li>Events linked to evidence</li>
+            <li>Cause and effect revealed</li>
+          </ul>
+        </div>
+
+        <div class="scene-visual timeline-visual" aria-hidden="true">
+          <div class="timeline-river"></div>
+          <div class="investigative-track">
+            <div class="timeline-line"></div>
+
+            <article class="timeline-step step-email">
+              <time>08:14</time><i class="timeline-marker">01</i>
+              <div class="timeline-card document-event"><span>DOCUMENT</span><b>Email Received</b><small>Approval request · Alex Morgan</small></div>
+            </article>
+            <article class="timeline-step step-login">
+              <time>08:47</time><i class="timeline-marker">02</i>
+              <div class="timeline-card platform-event"><span>EVENT</span><b>Login</b><small>Chicago · Trusted device</small></div>
+            </article>
+            <article class="timeline-step step-account">
+              <time>09:06</time><i class="timeline-marker">03</i>
+              <div class="timeline-card intelligence-event"><span>EVENT</span><b>Account Created</b><small>Account ending 7842</small></div>
+            </article>
+            <article class="timeline-step step-transfer">
+              <time>09:42</time><i class="timeline-marker">04</i>
+              <div class="timeline-card process-event"><span>EVENT</span><b>Money Transfer</b><small>$248,000 · Northstar Systems</small></div>
+            </article>
+            <article class="timeline-step step-call">
+              <time>10:18</time><i class="timeline-marker">05</i>
+              <div class="timeline-card intelligence-event"><span>EVENT</span><b>Phone Call</b><small>Alex Morgan · 11 minutes</small></div>
+            </article>
+            <article class="timeline-step step-upload">
+              <time>11:03</time><i class="timeline-marker">06</i>
+              <div class="timeline-card completed-event"><span>DOCUMENT</span><b>Document Uploaded</b><small>Agreement · SHA-256 verified</small></div>
+            </article>
+          </div>
+
+          <div class="timeline-causality">
+            <span>REQUEST</span><i>→</i><span>ACCESS</span><i>→</i><span>ACCOUNT</span><i>→</i><span>TRANSFER</span><i>→</i><span>CONFIRMATION</span>
+          </div>
+          <div class="timeline-status"><i></i><span>SEQUENCE RECONSTRUCTED</span><b>6 EVENTS · 2 SOURCE DOCUMENTS · 1 INVESTIGATIVE THREAD</b></div>
+        </div>
+      </div>
+    </section>
+
     <section class="journey scene" id="journey" data-scene="journey">
       <div class="journey-heading">
         <p class="eyebrow green">THE COMPLETE TRANSFORMATION</p>
@@ -362,7 +416,6 @@
       </div>
 
       <div class="pipeline-grid">
-        <article><span>08</span><b>Search</b><p>Surface the right information instantly.</p></article>
         <article><span>09</span><b>Dynamic Binder</b><p>Turn intelligence into professional work product.</p></article>
         <article><span>10</span><b>Collaborate</b><p>Share, annotate, review, and work securely.</p></article>
         <article><span>11</span><b>Deploy</b><p>Local, cloud, or hybrid—without changing the experience.</p></article>

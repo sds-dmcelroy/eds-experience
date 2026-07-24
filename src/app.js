@@ -314,6 +314,42 @@ function initGsap() {
     }
   });
 
+  if (location.hash !== "#timeline") {
+    const mobileTimeline = matchMedia("(max-width: 700px)").matches;
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#timeline",
+        start: "top 28%",
+        end: "bottom 38%",
+        scrub: 1
+      }
+    });
+    timeline
+      .from("#timeline .timeline-line", {
+        scaleX: mobileTimeline ? 1 : 0,
+        scaleY: mobileTimeline ? 0 : 1
+      })
+      .from("#timeline .timeline-marker", {
+        scale: 0,
+        opacity: 0,
+        stagger: .08
+      }, .12)
+      .from("#timeline .timeline-card", {
+        y: (index) => index % 2 ? 34 : -34,
+        opacity: 0,
+        stagger: .08
+      }, .22)
+      .from("#timeline .timeline-causality span, #timeline .timeline-causality i", {
+        x: -10,
+        opacity: 0,
+        stagger: .04
+      }, .58)
+      .from("#timeline .timeline-status", {
+        y: 22,
+        opacity: 0
+      }, .8);
+  }
+
   gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .08,
     scrollTrigger: { trigger: ".pipeline-grid", start: "top 78%" }
@@ -335,6 +371,19 @@ if (location.hash === "#knowledge-graph") {
         smoother.scrollTo("#knowledge-graph", false, "top top");
       } else {
         qs("#knowledge-graph")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
+}
+
+if (location.hash === "#timeline") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#timeline", false, "top top");
+      } else {
+        qs("#timeline")?.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
   });
