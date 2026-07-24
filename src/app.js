@@ -69,6 +69,13 @@ function initGsap() {
     });
   }
 
+  const entranceTrigger = (trigger, start) => ({
+    trigger,
+    start,
+    toggleActions: "play none none none",
+    once: true
+  });
+
   const load = gsap.timeline({ defaults: { ease: "power3.out" } });
   load.from(".site-header", { y: -40, opacity: 0, duration: .8 })
       .from(".hero .eyebrow", { y: 20, opacity: 0, duration: .5 }, "-=.25")
@@ -94,33 +101,34 @@ function initGsap() {
   qsa(".process-scene").forEach((section) => {
     const copy = qs(".scene-copy", section);
     const visual = qs(".scene-visual", section);
+    if (location.hash === `#${section.id}`) return;
     gsap.from(copy, {
-      x: -80, opacity: 0,
-      scrollTrigger: { trigger: section, start: "top 65%", end: "top 25%", scrub: 1 }
+      x: -80, opacity: 0, duration: .72, ease: "power3.out",
+      scrollTrigger: entranceTrigger(section, "top 82%")
     });
     gsap.from(visual, {
-      x: 100, opacity: 0, scale: .94,
-      scrollTrigger: { trigger: section, start: "top 62%", end: "top 18%", scrub: 1 }
+      x: 100, opacity: 0, scale: .94, duration: .92, ease: "power3.out",
+      scrollTrigger: entranceTrigger(section, "top 78%")
     });
   });
 
   gsap.to(".intake span", {
-    x: 190, scale: .35, opacity: 0, stagger: .08,
-    scrollTrigger: { trigger: "#capture", start: "top 15%", end: "bottom 40%", scrub: 1 }
+    x: 190, scale: .35, opacity: 0, stagger: .08, duration: .85, ease: "power2.inOut",
+    scrollTrigger: entranceTrigger("#capture", "top 58%")
   });
   gsap.to(".portal", {
-    scale: 1.15, filter: "brightness(1.45)",
-    scrollTrigger: { trigger: "#capture", start: "top 20%", end: "bottom 35%", scrub: 1, yoyo: true }
+    scale: 1.15, filter: "brightness(1.45)", duration: 1.1, ease: "power2.out",
+    scrollTrigger: entranceTrigger("#capture", "top 61%")
   });
 
   gsap.from(".ocr-output code", {
-    x: 50, opacity: 0, stagger: .15,
-    scrollTrigger: { trigger: "#ocr", start: "top 30%", end: "bottom 45%", scrub: 1 }
+    x: 50, opacity: 0, stagger: .14, duration: .72, ease: "power3.out",
+    scrollTrigger: entranceTrigger("#ocr", "top 64%")
   });
 
   gsap.from(".entity-card", {
-    scale: .75, opacity: 0, stagger: .18,
-    scrollTrigger: { trigger: "#ai", start: "top 30%", end: "bottom 45%", scrub: 1 }
+    scale: .75, opacity: 0, stagger: .16, duration: .72, ease: "back.out(1.4)",
+    scrollTrigger: entranceTrigger("#ai", "top 64%")
   });
   gsap.to(".neural-core", {
     rotate: 180,
@@ -128,12 +136,8 @@ function initGsap() {
   });
 
   const classificationTimeline = gsap.timeline({
-    scrollTrigger: {
-      trigger: "#classification",
-      start: "top 28%",
-      end: "bottom 38%",
-      scrub: 1
-    }
+    defaults: { duration: .62, ease: "power3.out" },
+    scrollTrigger: entranceTrigger("#classification", "top 68%")
   });
   classificationTimeline
     .from(".class-document", {
@@ -147,7 +151,9 @@ function initGsap() {
       x: 150,
       scale: .32,
       opacity: 0,
-      stagger: .07
+      stagger: .07,
+      duration: .52,
+      ease: "power2.in"
     }, .32)
     .from(".classify-core", {
       scale: .65,
@@ -181,12 +187,8 @@ function initGsap() {
 
   if (location.hash !== "#entities") {
     const extractionTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#entities",
-        start: "top 28%",
-        end: "bottom 38%",
-        scrub: 1
-      }
+      defaults: { duration: .64, ease: "power3.out" },
+      scrollTrigger: entranceTrigger("#entities", "top 68%")
     });
     extractionTimeline
       .from("#entities .extraction-document", {
@@ -227,12 +229,8 @@ function initGsap() {
 
   if (location.hash !== "#metadata") {
     const metadataTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#metadata",
-        start: "top 28%",
-        end: "bottom 38%",
-        scrub: 1
-      }
+      defaults: { duration: .68, ease: "power3.out" },
+      scrollTrigger: entranceTrigger("#metadata", "top 70%")
     });
     metadataTimeline
       .from("#metadata .metadata-record", {
@@ -270,12 +268,8 @@ function initGsap() {
 
   if (location.hash !== "#knowledge-graph") {
     const graphTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#knowledge-graph",
-        start: "top 28%",
-        end: "bottom 38%",
-        scrub: 1
-      }
+      defaults: { duration: .7, ease: "power3.out" },
+      scrollTrigger: entranceTrigger("#knowledge-graph", "top 72%")
     });
     graphTimeline
       .from("#knowledge-graph .graph-event", {
@@ -317,12 +311,8 @@ function initGsap() {
   if (location.hash !== "#timeline") {
     const mobileTimeline = matchMedia("(max-width: 700px)").matches;
     const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#timeline",
-        start: "top 28%",
-        end: "bottom 38%",
-        scrub: 1
-      }
+      defaults: { duration: .68, ease: "power3.out" },
+      scrollTrigger: entranceTrigger("#timeline", "top 72%")
     });
     timeline
       .from("#timeline .timeline-line", {
@@ -352,12 +342,8 @@ function initGsap() {
 
   if (location.hash !== "#case-building") {
     const caseTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#case-building",
-        start: "top 28%",
-        end: "bottom 38%",
-        scrub: 1
-      }
+      defaults: { duration: .7, ease: "power3.out" },
+      scrollTrigger: entranceTrigger("#case-building", "top 74%")
     });
     caseTimeline
       .from("#case-building .case-header", {
@@ -395,12 +381,8 @@ function initGsap() {
 
   if (location.hash !== "#investigation-results") {
     const resultsTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#investigation-results",
-        start: "top 28%",
-        end: "bottom 38%",
-        scrub: 1
-      }
+      defaults: { duration: .72, ease: "power3.out" },
+      scrollTrigger: entranceTrigger("#investigation-results", "top 76%")
     });
     resultsTimeline
       .from("#investigation-results .results-header", {
@@ -436,8 +418,8 @@ function initGsap() {
   }
 
   gsap.from(".pipeline-grid article", {
-    y: 60, opacity: 0, stagger: .08,
-    scrollTrigger: { trigger: ".pipeline-grid", start: "top 78%" }
+    y: 60, opacity: 0, stagger: .08, duration: .72, ease: "power3.out",
+    scrollTrigger: entranceTrigger(".pipeline-grid", "top 82%")
   });
 }
 
