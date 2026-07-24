@@ -167,6 +167,18 @@ function initGsap() {
       onLeaveBack: () => {
         buildingForward = false;
         resetEntrance();
+      },
+      onUpdate: (self) => {
+        if (self.direction < 0 && self.progress === 0) {
+          buildingForward = false;
+          resetEntrance();
+        }
+      },
+      onRefresh: (self) => {
+        if (!self.isActive && self.progress === 0) {
+          buildingForward = false;
+          resetEntrance();
+        }
       }
     });
     return animation;
