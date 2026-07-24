@@ -2,6 +2,8 @@ const qs = (s, p = document) => p.querySelector(s);
 const qsa = (s, p = document) => [...p.querySelectorAll(s)];
 
 const progress = qs(".progress span");
+const sceneProgress = qs(".scene-progress");
+const sceneProgressFill = qs(".scene-progress span");
 const sceneNav = qs(".scene-nav");
 const navLinks = qsa(".scene-nav a");
 const scenes = qsa("[data-scene]");
@@ -11,8 +13,27 @@ function updateProgress() {
   const max = document.documentElement.scrollHeight - innerHeight;
   const ratio = max > 0 ? scrollY / max : 0;
   progress.style.width = `${ratio * 100}%`;
+
+  let activeScene = scenes[0];
+  for (const scene of scenes) {
+    if (scene.offsetTop <= scrollY + 1) activeScene = scene;
+    else break;
+  }
+
+  const activeIndex = scenes.indexOf(activeScene);
+  const nextScene = scenes[activeIndex + 1];
+  const sceneStart = activeScene?.offsetTop || 0;
+  const sceneEnd = nextScene?.offsetTop ?? document.documentElement.scrollHeight;
+  const sceneDistance = Math.max(sceneEnd - sceneStart, 1);
+  const sceneRatio = Math.min(Math.max((scrollY - sceneStart) / sceneDistance, 0), 1);
+  const scenePercent = Math.round(sceneRatio * 100);
+
+  sceneProgressFill.style.transform = `scaleY(${sceneRatio})`;
+  sceneProgress.setAttribute("aria-valuenow", scenePercent);
+  sceneProgress.setAttribute("aria-label", `Progress through ${activeScene?.id || "current scene"}`);
 }
 addEventListener("scroll", updateProgress, { passive: true });
+addEventListener("resize", updateProgress);
 updateProgress();
 
 qsa(".hero-stations button").forEach((button) => {
