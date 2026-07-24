@@ -2,6 +2,7 @@ const qs = (s, p = document) => p.querySelector(s);
 const qsa = (s, p = document) => [...p.querySelectorAll(s)];
 
 const progress = qs(".progress span");
+const sceneNav = qs(".scene-nav");
 const navLinks = qsa(".scene-nav a");
 const scenes = qsa("[data-scene]");
 const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -25,7 +26,14 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
     navLinks.forEach((link) => {
-      link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+      const isActive = link.getAttribute("href") === `#${entry.target.id}`;
+      link.classList.toggle("active", isActive);
+      if (isActive && sceneNav?.scrollWidth > sceneNav.clientWidth) {
+        sceneNav.scrollTo({
+          left: link.offsetLeft - (sceneNav.clientWidth - link.clientWidth) / 2,
+          behavior: prefersReducedMotion.matches ? "auto" : "smooth"
+        });
+      }
     });
   });
 }, { threshold: 0.42 });
@@ -173,17 +181,20 @@ function initGsap() {
       .from(".doc", { x: -120, opacity: 0, rotate: -30, stagger: .08, duration: .7 }, "-=.9")
       .from(".clarity-panel", { x: 80, opacity: 0, duration: .8 }, "-=.7");
 
-  gsap.to(".hero-art", {
-    yPercent: 10, scale: 1.12, ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
-  });
-  gsap.to(".document-cloud", {
-    x: 180, y: 90, rotate: 12, ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1.2 }
-  });
-  gsap.to(".river-hero", {
-    xPercent: 8, scaleY: 1.3, ease: "none",
-    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 }
+  const responsiveMotion = gsap.matchMedia();
+  responsiveMotion.add("(min-width: 1001px) and (min-height: 721px)", () => {
+    gsap.to(".hero-art", {
+      yPercent: 10, scale: 1.12, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+    });
+    gsap.to(".document-cloud", {
+      x: 180, y: 90, rotate: 12, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1.2 }
+    });
+    gsap.to(".river-hero", {
+      xPercent: 8, scaleY: 1.3, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1 }
+    });
   });
 
   qsa(".process-scene").forEach((section) => {
@@ -202,13 +213,14 @@ function initGsap() {
 
   const capturePortal = qs("#capture .portal");
   const captureFlow = qs("#capture .flow-line");
-  if (matchMedia("(max-width: 700px)").matches) {
+  responsiveMotion.add("(max-width: 700px)", () => {
     const visualBounds = qs("#capture .scene-visual").getBoundingClientRect();
     const portalBounds = capturePortal.getBoundingClientRect();
     const portalShift = visualBounds.top + visualBounds.height / 2
       - portalBounds.top - portalBounds.height / 2;
     gsap.set([capturePortal, captureFlow], { y: portalShift });
-  }
+    return () => gsap.set([capturePortal, captureFlow], { clearProps: "y" });
+  });
 
   const intakeOffsets = [[-38, -38], [0, -48], [38, -38], [-32, 28], [32, 28]];
   gsap.set("#capture .intake", { zIndex: 4 });
@@ -808,3 +820,10 @@ if (directScene?.matches("[data-scene]")) {
     addEventListener("load", positionDirectScene, { once: true });
   }
 }
+
+let refreshTimer;
+addEventListener("resize", () => {
+  updateProgress();
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => window.ScrollTrigger?.refresh(), 180);
+}, { passive: true });
