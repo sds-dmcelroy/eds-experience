@@ -268,6 +268,52 @@ function initGsap() {
     }
   });
 
+  if (location.hash !== "#knowledge-graph") {
+    const graphTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#knowledge-graph",
+        start: "top 28%",
+        end: "bottom 38%",
+        scrub: 1
+      }
+    });
+    graphTimeline
+      .from("#knowledge-graph .graph-event", {
+        scale: .55,
+        opacity: 0
+      })
+      .from("#knowledge-graph .graph-links path", {
+        strokeDashoffset: 180,
+        opacity: 0,
+        stagger: .06
+      }, .2)
+      .from("#knowledge-graph .graph-node:not(.graph-event)", {
+        scale: .65,
+        opacity: 0,
+        stagger: .08
+      }, .34)
+      .from("#knowledge-graph .relationship", {
+        y: 8,
+        opacity: 0,
+        stagger: .05
+      }, .58)
+      .from("#knowledge-graph .graph-status", {
+        y: 22,
+        opacity: 0
+      }, .8);
+  }
+
+  gsap.to("#knowledge-graph .halo-a", {
+    rotate: 220,
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#knowledge-graph",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 1.2
+    }
+  });
+
   gsap.from(".pipeline-grid article", {
     y: 60, opacity: 0, stagger: .08,
     scrollTrigger: { trigger: ".pipeline-grid", start: "top 78%" }
@@ -279,4 +325,17 @@ if (gsapReady && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   initGsap();
 } else {
   initFallbackAnimations();
+}
+
+if (location.hash === "#knowledge-graph") {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const smoother = window.ScrollSmoother?.get?.();
+      if (smoother) {
+        smoother.scrollTo("#knowledge-graph", false, "top top");
+      } else {
+        qs("#knowledge-graph")?.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    });
+  });
 }

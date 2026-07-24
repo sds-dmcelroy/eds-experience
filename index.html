@@ -42,6 +42,7 @@
       <a href="#classification">Classify</a>
       <a href="#entities">Entities</a>
       <a href="#metadata">Metadata</a>
+      <a href="#knowledge-graph">Graph</a>
       <a href="#journey">Journey</a>
     </nav>
   </header>
@@ -300,6 +301,59 @@
       </div>
     </section>
 
+    <section class="process-scene scene knowledge-graph" id="knowledge-graph" data-scene="knowledge-graph">
+      <div class="sticky-stage">
+        <div class="scene-number">07</div>
+        <div class="scene-copy">
+          <p class="eyebrow purple">KNOWLEDGE GRAPH</p>
+          <h2>Reveal the relationships that <em>connect the story.</em></h2>
+          <p>EDS connects people, entities, events, and source documents—revealing organized context that isolated records cannot show.</p>
+          <ul>
+            <li>People &amp; entities</li>
+            <li>Events &amp; documents</li>
+            <li>Context you can act on</li>
+          </ul>
+        </div>
+
+        <div class="scene-visual graph-visual" aria-hidden="true">
+          <div class="graph-halo halo-a"></div>
+          <div class="graph-halo halo-b"></div>
+
+          <svg class="graph-links" viewBox="0 0 700 500" preserveAspectRatio="none">
+            <path class="link-purple" d="M350 250 C275 200 210 145 120 112"/>
+            <path class="link-orange" d="M350 250 C430 196 505 145 588 116"/>
+            <path class="link-blue" d="M350 250 C350 190 350 135 350 76"/>
+            <path class="link-blue" d="M350 250 C270 300 205 355 112 404"/>
+            <path class="link-green" d="M350 250 C430 305 510 355 592 404"/>
+            <path class="link-green" d="M350 250 C350 315 350 370 350 433"/>
+          </svg>
+
+          <div class="graph-node graph-event">
+            <span>EVENT</span>
+            <strong>Payment approved</strong>
+            <b>$248,000</b>
+            <small>Connected intelligence</small>
+          </div>
+
+          <article class="graph-node graph-person"><i>AM</i><span>PERSON</span><b>Alex Morgan</b><small>Approved event</small></article>
+          <article class="graph-node graph-account"><i>••</i><span>ACCOUNT</span><b>•••• 7842</b><small>Payment source</small></article>
+          <article class="graph-node graph-date"><i>18</i><span>DATE</span><b>Mar 18, 2026</b><small>Occurred on</small></article>
+          <article class="graph-node graph-document"><i>PDF</i><span>DOCUMENT</span><b>Project approval</b><small>Source record</small></article>
+          <article class="graph-node graph-location"><i>CHI</i><span>LOCATION</span><b>Chicago</b><small>Deployment site</small></article>
+          <article class="graph-node graph-entity"><i>NS</i><span>ENTITY</span><b>Northstar Systems</b><small>Payment recipient</small></article>
+
+          <span class="relationship relation-approved">APPROVED</span>
+          <span class="relationship relation-funded">FUNDED BY</span>
+          <span class="relationship relation-occurred">OCCURRED ON</span>
+          <span class="relationship relation-sourced">SOURCED FROM</span>
+          <span class="relationship relation-located">LOCATED IN</span>
+          <span class="relationship relation-paid">PAID TO</span>
+
+          <div class="graph-status"><i></i><span>RELATIONSHIPS RESOLVED</span><b>6 CONNECTIONS · 1 CONTEXTUAL STORY</b></div>
+        </div>
+      </div>
+    </section>
+
     <section class="journey scene" id="journey" data-scene="journey">
       <div class="journey-heading">
         <p class="eyebrow green">THE COMPLETE TRANSFORMATION</p>
@@ -308,7 +362,6 @@
       </div>
 
       <div class="pipeline-grid">
-        <article><span>07</span><b>Knowledge Graph</b><p>Reveal relationships among people, events, and documents.</p></article>
         <article><span>08</span><b>Search</b><p>Surface the right information instantly.</p></article>
         <article><span>09</span><b>Dynamic Binder</b><p>Turn intelligence into professional work product.</p></article>
         <article><span>10</span><b>Collaborate</b><p>Share, annotate, review, and work securely.</p></article>
