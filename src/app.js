@@ -69,7 +69,13 @@ function initGsap() {
     });
   }
 
-  const bindLifecycle = (animation, trigger, start) => {
+  const bindScrollChoreography = (animation, trigger, {
+    start = "top 68%",
+    end = "bottom 38%",
+    buildEnd = .72
+  } = {}) => {
+    let buildingForward = false;
+
     const resetEntrance = () => {
       animation.pause(0);
       if (typeof animation.getChildren === "function") {
@@ -82,16 +88,32 @@ function initGsap() {
     window.ScrollTrigger.create({
       trigger,
       start,
-      end: "bottom 18%",
-      onEnter: () => animation.restart(),
+      end,
+      onEnter: (self) => {
+        buildingForward = true;
+        animation.totalProgress(Math.min(self.progress / buildEnd, 1)).pause();
+      },
+      onUpdate: (self) => {
+        if (self.direction > 0 && buildingForward) {
+          animation.totalProgress(Math.min(self.progress / buildEnd, 1)).pause();
+        } else if (self.direction < 0) {
+          animation.totalProgress(1).pause();
+        }
+      },
       onLeave: () => animation.progress(1).pause(),
-      onEnterBack: () => animation.progress(1).pause(),
+      onEnterBack: () => {
+        buildingForward = false;
+        animation.progress(1).pause();
+      },
       onLeaveBack: () => animation.progress(1).pause()
     });
     window.ScrollTrigger.create({
       trigger,
       start: "top 96%",
-      onLeaveBack: resetEntrance
+      onLeaveBack: () => {
+        buildingForward = false;
+        resetEntrance();
+      }
     });
     return animation;
   };
@@ -122,34 +144,88 @@ function initGsap() {
     const copy = qs(".scene-copy", section);
     const visual = qs(".scene-visual", section);
     if (location.hash === `#${section.id}`) return;
-    bindLifecycle(gsap.from(copy, {
-      x: -80, opacity: 0, duration: 1.05, ease: "power3.out",
+    bindScrollChoreography(gsap.from(copy, {
+      x: -80, opacity: 0, ease: "power3.out",
       paused: true
-    }), section, "top 82%");
-    bindLifecycle(gsap.from(visual, {
-      x: 100, opacity: 0, scale: .94, duration: 1.28, ease: "power3.out",
+    }), section, { start: "top 92%", end: "top 56%", buildEnd: .88 });
+    bindScrollChoreography(gsap.from(visual, {
+      x: 100, opacity: 0, scale: .94, ease: "power3.out",
       paused: true
-    }), section, "top 78%");
+    }), section, { start: "top 88%", end: "top 48%", buildEnd: .9 });
   });
 
-  bindLifecycle(gsap.from(".intake span", {
-    x: -90, scale: .75, opacity: 0, stagger: .14, duration: 1.12, ease: "power3.out",
-    paused: true
-  }), "#capture", "top 64%");
-  bindLifecycle(gsap.to(".portal", {
-    scale: 1.08, filter: "brightness(1.25)", duration: 1.25, ease: "power2.out",
-    paused: true
-  }), "#capture", "top 61%");
+  const capturePortal = qs("#capture .portal");
+  const captureFlow = qs("#capture .flow-line");
+  if (matchMedia("(max-width: 700px)").matches) {
+    const visualBounds = qs("#capture .scene-visual").getBoundingClientRect();
+    const portalBounds = capturePortal.getBoundingClientRect();
+    const portalShift = visualBounds.top + visualBounds.height / 2
+      - portalBounds.top - portalBounds.height / 2;
+    gsap.set([capturePortal, captureFlow], { y: portalShift });
+  }
 
-  bindLifecycle(gsap.from(".ocr-output code", {
-    x: 50, opacity: 0, stagger: .16, duration: .9, ease: "power3.out",
-    paused: true
-  }), "#ocr", "top 66%");
+  const intakeOffsets = [[-38, -38], [0, -48], [38, -38], [-32, 28], [32, 28]];
+  gsap.set("#capture .intake", { zIndex: 4 });
+  gsap.set("#capture .portal strong", { position: "relative", zIndex: 5 });
 
-  bindLifecycle(gsap.from(".entity-card", {
-    scale: .75, opacity: 0, stagger: .18, duration: .86, ease: "back.out(1.4)",
+  const captureTimeline = gsap.timeline({
+    defaults: { ease: "power2.inOut" },
     paused: true
-  }), "#ai", "top 66%");
+  });
+  captureTimeline
+    .from("#capture .intake span", {
+      x: -70,
+      opacity: 0,
+      stagger: .12,
+      duration: .7,
+      ease: "power3.out"
+    })
+    .to("#capture .portal", {
+      scale: 1.08,
+      filter: "brightness(1.25)",
+      duration: .7
+    }, .34)
+    .to("#capture .intake span", {
+      x: (index, element) => {
+        const source = element.getBoundingClientRect();
+        const destination = capturePortal.getBoundingClientRect();
+        return destination.left + destination.width / 2 - source.left - source.width / 2 + intakeOffsets[index][0];
+      },
+      y: (index, element) => {
+        const source = element.getBoundingClientRect();
+        const destination = capturePortal.getBoundingClientRect();
+        return destination.top + destination.height / 2 - source.top - source.height / 2 + intakeOffsets[index][1];
+      },
+      scale: .22,
+      stagger: .15,
+      duration: 1.35,
+      ease: "power2.inOut"
+    }, .72)
+    .to("#capture .portal", {
+      scale: 1,
+      filter: "brightness(1.12)",
+      duration: .55
+    }, 1.75);
+
+  if (location.hash === "#capture") {
+    captureTimeline.progress(1).pause();
+  } else {
+    bindScrollChoreography(captureTimeline, "#capture", {
+      start: "top 62%",
+      end: "bottom 34%",
+      buildEnd: .74
+    });
+  }
+
+  bindScrollChoreography(gsap.from(".ocr-output code", {
+    x: 50, opacity: 0, stagger: .18, ease: "power3.out",
+    paused: true
+  }), "#ocr", { start: "top 64%", end: "bottom 40%", buildEnd: .67 });
+
+  bindScrollChoreography(gsap.from(".entity-card", {
+    scale: .75, opacity: 0, stagger: .2, ease: "back.out(1.4)",
+    paused: true
+  }), "#ai", { start: "top 64%", end: "bottom 40%", buildEnd: .68 });
   gsap.to(".neural-core", {
     rotate: 180,
     scrollTrigger: { trigger: "#ai", start: "top 15%", end: "bottom 30%", scrub: 1 }
@@ -185,7 +261,11 @@ function initGsap() {
       y: 28,
       opacity: 0
     }, 1.02);
-  bindLifecycle(classificationTimeline, "#classification", "top 70%");
+  bindScrollChoreography(classificationTimeline, "#classification", {
+    start: "top 66%",
+    end: "bottom 36%",
+    buildEnd: .74
+  });
 
   gsap.to(".classify-core", {
     rotate: 360,
@@ -227,7 +307,11 @@ function initGsap() {
         y: 24,
         opacity: 0
       }, 1.08);
-    bindLifecycle(extractionTimeline, "#entities", "top 70%");
+    bindScrollChoreography(extractionTimeline, "#entities", {
+      start: "top 66%",
+      end: "bottom 36%",
+      buildEnd: .75
+    });
   }
 
   gsap.to("#entities .extraction-engine", {
@@ -267,7 +351,11 @@ function initGsap() {
         y: 24,
         opacity: 0
       }, 1.08);
-    bindLifecycle(metadataTimeline, "#metadata", "top 72%");
+    bindScrollChoreography(metadataTimeline, "#metadata", {
+      start: "top 68%",
+      end: "bottom 34%",
+      buildEnd: .76
+    });
   }
 
   gsap.to("#metadata .orbit-a", {
@@ -310,7 +398,11 @@ function initGsap() {
         y: 22,
         opacity: 0
       }, 1.12);
-    bindLifecycle(graphTimeline, "#knowledge-graph", "top 74%");
+    bindScrollChoreography(graphTimeline, "#knowledge-graph", {
+      start: "top 70%",
+      end: "bottom 32%",
+      buildEnd: .78
+    });
   }
 
   gsap.to("#knowledge-graph .halo-a", {
@@ -354,7 +446,11 @@ function initGsap() {
         y: 22,
         opacity: 0
       }, 1.14);
-    bindLifecycle(timeline, "#timeline", "top 74%");
+    bindScrollChoreography(timeline, "#timeline", {
+      start: "top 68%",
+      end: "bottom 34%",
+      buildEnd: .78
+    });
   }
 
   if (location.hash !== "#case-building") {
@@ -394,7 +490,11 @@ function initGsap() {
         opacity: 0,
         stagger: .05
       }, 1.08);
-    bindLifecycle(caseTimeline, "#case-building", "top 76%");
+    bindScrollChoreography(caseTimeline, "#case-building", {
+      start: "top 70%",
+      end: "bottom 32%",
+      buildEnd: .8
+    });
   }
 
   if (location.hash !== "#investigation-results") {
@@ -433,13 +533,17 @@ function initGsap() {
         y: 20,
         opacity: 0
       }, 1.16);
-    bindLifecycle(resultsTimeline, "#investigation-results", "top 78%");
+    bindScrollChoreography(resultsTimeline, "#investigation-results", {
+      start: "top 72%",
+      end: "bottom 30%",
+      buildEnd: .8
+    });
   }
 
-  bindLifecycle(gsap.from(".pipeline-grid article", {
-    y: 60, opacity: 0, stagger: .1, duration: .86, ease: "power3.out",
+  bindScrollChoreography(gsap.from(".pipeline-grid article", {
+    y: 60, opacity: 0, stagger: .12, ease: "power3.out",
     paused: true
-  }), ".pipeline-grid", "top 84%");
+  }), ".pipeline-grid", { start: "top 90%", end: "top 42%", buildEnd: .82 });
 }
 
 const gsapReady = Boolean(window.gsap && window.ScrollTrigger);
