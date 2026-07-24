@@ -65,7 +65,7 @@ button{font:inherit}
 .strand-2{top:45px;color:#1787ff;animation-delay:-.7s}
 .strand-3{top:78px;color:#ff922b;animation-delay:-1.4s}
 .strand-4{top:112px;color:#71df42;animation-delay:-2.1s}
-@keyframes riverPulse{0%,100%{filter:brightness(.9);transform:translateX(0) scaleY(1)}50%{filter:brightness(1.5);transform:translateX(2%) scaleY(1.16)}}
+@keyframes riverPulse{0%,100%{opacity:.7;transform:translateX(0) scaleY(1)}50%{opacity:.95;transform:translateX(2%) scaleY(1.16)}}
 .hero-stations{position:absolute;z-index:8;left:50%;bottom:44px;transform:translateX(-50%);display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:min(1040px,90vw)}
 .hero-stations button{border:1px solid rgba(255,255,255,.16);background:rgba(2,8,23,.72);color:white;border-radius:14px;padding:14px 9px;cursor:pointer;backdrop-filter:blur(12px);transition:.25s ease}
 .hero-stations button:hover{transform:translateY(-7px);border-color:rgba(255,255,255,.45);box-shadow:0 16px 35px rgba(0,0,0,.3)}
@@ -107,7 +107,7 @@ button{font:inherit}
 .scan-page{position:relative;z-index:2;height:72%;background:#eef4ff;border-radius:18px;padding:12%;box-shadow:0 30px 60px rgba(0,0,0,.28)}
 .scan-page span{display:block;height:10px;background:#afbdd7;border-radius:99px;margin:18px 0}
 .scan-page span:nth-child(2){width:68%}.scan-page span:nth-child(3){width:90%}.scan-page span:nth-child(4){width:55%}
-.scan-beam{position:absolute;left:0;right:0;height:5px;background:#26b7ff;box-shadow:0 0 25px #26b7ff;animation:scan 3s ease-in-out infinite}
+.scan-beam{position:absolute;left:0;right:0;top:8%;height:5px;background:#26b7ff;box-shadow:0 0 25px #26b7ff;animation:scan 3s ease-in-out infinite}
 @keyframes scan{0%,100%{top:8%}50%{top:90%}}
 .ocr-output{z-index:2;display:flex;flex-direction:column;gap:18px}
 .ocr-output code{padding:14px;border-left:3px solid #2dbbff;background:rgba(37,153,255,.09);font-size:clamp(13px,1.3vw,20px);color:#b9e9ff}
@@ -368,6 +368,32 @@ linear-gradient(180deg,#061827 0%,#03111e 52%,#020a14 100%)}
 .final-content{position:absolute;z-index:7;left:50%;top:51%;width:min(900px,88vw);transform:translateX(-50%)}.final-content .eyebrow{margin:0}.final-content h2{margin:12px 0 12px;font-size:clamp(48px,6.4vw,92px);line-height:.98;letter-spacing:-.045em}.final-subheading{margin:0;color:#e5f4f2;font-size:clamp(18px,2vw,26px);font-weight:700}.final-support{max-width:750px;margin:14px auto 0;color:#aebfd0;font-size:15px;line-height:1.6}
 .final-actions{display:flex;justify-content:center;gap:12px;margin-top:22px}.final-actions button{padding:14px 22px;border-radius:999px;font-weight:800;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}.final-actions button:hover{transform:translateY(-3px)}.primary-action{border:0;background:linear-gradient(90deg,#55c99b,#3c9dcc);color:#03161c;box-shadow:0 14px 35px rgba(54,171,163,.25)}.secondary-action{border:1px solid rgba(128,215,211,.35);background:rgba(7,35,49,.72);color:#e5fffa}.secondary-action:hover{border-color:#7bdec9}
 .final-indicators{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:20px}.final-indicators span{display:flex;align-items:center;gap:5px;padding:6px 9px;border:1px solid rgba(103,205,193,.18);border-radius:999px;background:rgba(9,35,47,.65);color:#b9d9d5;font-size:6px;letter-spacing:.05em}.final-indicators i{display:grid;place-items:center;width:12px;aspect-ratio:1;border-radius:50%;background:rgba(101,213,126,.18);color:#83e497;font-size:7px;font-style:normal}
+.hero .strand,
+.process-scene .scene-visual::before,
+.process-scene .portal i,
+.process-scene .scan-beam,
+.process-scene .cursor,
+.process-scene .connections path,
+.process-scene .extract-scan-line,
+.process-scene .extraction-engine::before,
+.process-scene .orbit-b,
+.process-scene .metadata-links path,
+.process-scene .graph-halo,
+.process-scene .graph-links path,
+.process-scene .case-links path{animation-play-state:paused}
+.hero.motion-active .strand,
+.process-scene.motion-active .scene-visual::before,
+.process-scene.motion-active .portal i,
+.process-scene.motion-active .scan-beam,
+.process-scene.motion-active .cursor,
+.process-scene.motion-active .connections path,
+.process-scene.motion-active .extract-scan-line,
+.process-scene.motion-active .extraction-engine::before,
+.process-scene.motion-active .orbit-b,
+.process-scene.motion-active .metadata-links path,
+.process-scene.motion-active .graph-halo,
+.process-scene.motion-active .graph-links path,
+.process-scene.motion-active .case-links path{animation-play-state:running}
 footer{display:flex;justify-content:center;align-items:center;gap:34px;padding:35px 5vw;background:#061735;border-top:1px solid rgba(255,255,255,.1);text-align:center}
 .footer-brand{font-size:30px;font-weight:900;letter-spacing:.12em}
 footer p{font-size:13px;line-height:1.6;color:#c2cce2}
@@ -430,5 +456,5 @@ footer p{font-size:13px;line-height:1.6;color:#c2cce2}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+  *,*::before,*::after{animation:none!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }

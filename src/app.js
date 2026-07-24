@@ -4,6 +4,7 @@ const qsa = (s, p = document) => [...p.querySelectorAll(s)];
 const progress = qs(".progress span");
 const navLinks = qsa(".scene-nav a");
 const scenes = qsa("[data-scene]");
+const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
 function updateProgress() {
   const max = document.documentElement.scrollHeight - innerHeight;
@@ -31,6 +32,15 @@ const observer = new IntersectionObserver((entries) => {
 
 scenes.forEach((scene) => observer.observe(scene));
 
+if (!prefersReducedMotion.matches) {
+  const motionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle("motion-active", entry.isIntersecting);
+    });
+  }, { rootMargin: "18% 0px", threshold: 0 });
+  qsa(".hero, .process-scene").forEach((scene) => motionObserver.observe(scene));
+}
+
 function initFallbackAnimations() {
   const revealTargets = qsa(".scene-copy, .scene-visual, .pipeline-grid article, .journey-heading, .security-strip");
   revealTargets.forEach((el) => el.classList.add("reveal"));
@@ -48,6 +58,10 @@ function initFallbackAnimations() {
   revealTargets.forEach((el) => revealObserver.observe(el));
 }
 
+function initReducedMotion() {
+  qsa(".reveal").forEach((el) => el.classList.remove("reveal"));
+}
+
 function initGsap() {
   const { gsap } = window;
   const pluginNames = [
@@ -57,9 +71,16 @@ function initGsap() {
   ];
   const plugins = pluginNames.map((name) => window[name]).filter(Boolean);
   gsap.registerPlugin(...plugins);
+  window.ScrollTrigger.config({
+    ignoreMobileResize: true,
+    limitCallbacks: true
+  });
+  window.ScrollTrigger.getAll()
+    .filter((trigger) => trigger.vars.id?.startsWith("eds-"))
+    .forEach((trigger) => trigger.kill());
 
   if (window.ScrollSmoother) {
-    window.ScrollSmoother.create({
+    window.ScrollSmoother.get() || window.ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
       smooth: 0,
@@ -75,39 +96,64 @@ function initGsap() {
     buildEnd = .72
   } = {}) => {
     let buildingForward = false;
+    let completed = false;
+    const triggerElement = typeof trigger === "string" ? qs(trigger) : trigger;
+    const triggerName = triggerElement?.id || "sequence";
+    const triggerIndex = window.ScrollTrigger.getAll().length;
 
     const resetEntrance = () => {
+      completed = false;
       animation.pause(0);
       if (typeof animation.getChildren === "function") {
         animation.getChildren(true, true, false).forEach((child) => child.totalProgress(0));
       }
       animation.totalProgress(0).pause();
     };
+    const completeEntrance = () => {
+      completed = true;
+      buildingForward = false;
+      animation.totalProgress(1).pause();
+    };
+    const renderForwardProgress = (scrollProgress) => {
+      const animationProgress = Math.min(scrollProgress / buildEnd, 1);
+      animation.totalProgress(animationProgress).pause();
+      if (animationProgress >= 1) {
+        completed = true;
+      }
+    };
 
     resetEntrance();
     window.ScrollTrigger.create({
+      id: `eds-${triggerName}-build-${triggerIndex}`,
       trigger,
       start,
       end,
+      fastScrollEnd: true,
       onEnter: (self) => {
         buildingForward = true;
-        animation.totalProgress(Math.min(self.progress / buildEnd, 1)).pause();
+        renderForwardProgress(self.progress);
       },
       onUpdate: (self) => {
         if (self.direction > 0 && buildingForward) {
-          animation.totalProgress(Math.min(self.progress / buildEnd, 1)).pause();
-        } else if (self.direction < 0) {
-          animation.totalProgress(1).pause();
+          renderForwardProgress(self.progress);
+        } else if (self.direction < 0 && self.isActive) {
+          completeEntrance();
         }
       },
-      onLeave: () => animation.progress(1).pause(),
-      onEnterBack: () => {
-        buildingForward = false;
-        animation.progress(1).pause();
-      },
-      onLeaveBack: () => animation.progress(1).pause()
+      onLeave: completeEntrance,
+      onEnterBack: completeEntrance,
+      onLeaveBack: completeEntrance,
+      onRefresh: (self) => {
+        if (completed || self.progress >= buildEnd) {
+          completeEntrance();
+        } else if (buildingForward && self.isActive) {
+          animation.invalidate();
+          renderForwardProgress(self.progress);
+        }
+      }
     });
     window.ScrollTrigger.create({
+      id: `eds-${triggerName}-reset-${triggerIndex}`,
       trigger,
       start: "top 96%",
       onLeaveBack: () => {
@@ -663,12 +709,11 @@ function initGsap() {
     });
   }
 
-  if (location.hash !== "#final-experience") {
-    const finalTimeline = gsap.timeline({
-      defaults: { duration: .92, ease: "power3.out" },
-      paused: true
-    });
-    finalTimeline
+  const finalTimeline = gsap.timeline({
+    defaults: { duration: .92, ease: "power3.out" },
+    paused: true
+  });
+  finalTimeline
       .to("#final-experience .deployment-echo", {
         scale: .68,
         opacity: .08
@@ -719,6 +764,9 @@ function initGsap() {
         opacity: 1,
         stagger: .08
       }, 2.02);
+  if (location.hash === "#final-experience") {
+    finalTimeline.progress(1).pause();
+  } else {
     bindScrollChoreography(finalTimeline, "#final-experience", {
       start: "top 76%",
       end: "bottom bottom",
@@ -733,99 +781,30 @@ function initGsap() {
 }
 
 const gsapReady = Boolean(window.gsap && window.ScrollTrigger);
-if (gsapReady && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if (prefersReducedMotion.matches) {
+  initReducedMotion();
+} else if (gsapReady) {
   initGsap();
 } else {
   initFallbackAnimations();
 }
 
-if (location.hash === "#knowledge-graph") {
-  requestAnimationFrame(() => {
+const directScene = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+if (directScene?.matches("[data-scene]")) {
+  const positionDirectScene = () => {
+    window.ScrollTrigger?.refresh();
     requestAnimationFrame(() => {
       const smoother = window.ScrollSmoother?.get?.();
       if (smoother) {
-        smoother.scrollTo("#knowledge-graph", false, "top top");
+        smoother.scrollTo(directScene, false, "top top");
       } else {
-        qs("#knowledge-graph")?.scrollIntoView({ behavior: "auto", block: "start" });
+        directScene.scrollIntoView({ behavior: "auto", block: "start" });
       }
     });
-  });
-}
-
-if (location.hash === "#timeline") {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const smoother = window.ScrollSmoother?.get?.();
-      if (smoother) {
-        smoother.scrollTo("#timeline", false, "top top");
-      } else {
-        qs("#timeline")?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-    });
-  });
-}
-
-if (location.hash === "#case-building") {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const smoother = window.ScrollSmoother?.get?.();
-      if (smoother) {
-        smoother.scrollTo("#case-building", false, "top top");
-      } else {
-        qs("#case-building")?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-    });
-  });
-}
-
-if (location.hash === "#investigation-results") {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const smoother = window.ScrollSmoother?.get?.();
-      if (smoother) {
-        smoother.scrollTo("#investigation-results", false, "top top");
-      } else {
-        qs("#investigation-results")?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-    });
-  });
-}
-
-if (location.hash === "#collaboration") {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const smoother = window.ScrollSmoother?.get?.();
-      if (smoother) {
-        smoother.scrollTo("#collaboration", false, "top top");
-      } else {
-        qs("#collaboration")?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-    });
-  });
-}
-
-if (location.hash === "#deployment") {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const smoother = window.ScrollSmoother?.get?.();
-      if (smoother) {
-        smoother.scrollTo("#deployment", false, "top top");
-      } else {
-        qs("#deployment")?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-    });
-  });
-}
-
-if (location.hash === "#final-experience") {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const smoother = window.ScrollSmoother?.get?.();
-      if (smoother) {
-        smoother.scrollTo("#final-experience", false, "top top");
-      } else {
-        qs("#final-experience")?.scrollIntoView({ behavior: "auto", block: "start" });
-      }
-    });
-  });
+  };
+  if (document.readyState === "complete") {
+    positionDirectScene();
+  } else {
+    addEventListener("load", positionDirectScene, { once: true });
+  }
 }
